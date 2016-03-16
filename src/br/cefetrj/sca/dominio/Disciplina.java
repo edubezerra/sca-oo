@@ -31,6 +31,11 @@ public class Disciplina {
 	private String codigo;
 
 	/**
+	 * Período ideal para se fazer esta disciplina.
+	 */
+	private Integer periodoIdeal;
+	
+	/**
 	 * Quantidade de créditos desta disciplina.
 	 */
 	private Integer quantidadeCreditos;
@@ -103,7 +108,7 @@ public class Disciplina {
 	}
 
 	public void setQuantidadeCreditos(Integer quantidadeCreditos) {
-		if (this.quantidadeCreditos < 0) {
+		if (quantidadeCreditos < 0) {
 			throw new IllegalArgumentException("Valor inválido para quantidade de créditos: " + quantidadeCreditos);
 		}
 		this.quantidadeCreditos = quantidadeCreditos;
@@ -113,6 +118,14 @@ public class Disciplina {
 		return preReqs;
 	}
 
+	public void setPeriodoIdeal(Integer periodoIdeal) {
+		if(periodoIdeal < 0) {
+			throw new IllegalArgumentException("Valor inválido para o periodo ideal: " + periodoIdeal);
+		}
+		
+		this.periodoIdeal = periodoIdeal;
+	}
+	
 	public Long getId() {
 		return id;
 	}

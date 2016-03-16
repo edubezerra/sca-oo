@@ -17,4 +17,6 @@ public interface AlunoRepositorio {
 	public abstract Aluno getAlunoPorCPF(String cpf);
 
 	public abstract Aluno getAlunoPorId(String idAluno);
+	
+	public abstract List<Aluno> getAlunosByCursoEPeriodo(String siglaCurso, String periodo);
 }

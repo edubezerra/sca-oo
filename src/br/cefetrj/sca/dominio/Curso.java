@@ -3,6 +3,7 @@ package br.cefetrj.sca.dominio;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 public class Curso {
@@ -14,7 +15,7 @@ public class Curso {
 	String sigla;
 
 	String nome;
-
+	
 	private Curso() {
 	}
 
@@ -30,7 +31,7 @@ public class Curso {
 	public String getNome() {
 		return nome;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

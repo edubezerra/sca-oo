@@ -43,4 +43,15 @@ public class ItemHistoricoEscolar {
 	public Disciplina getDisciplina() {
 		return disciplina;
 	}
+	
+	public PeriodoLetivo getPeriodo() {
+		return periodo;
+	}
+
+	@Override
+	public String toString() {
+		return "ItemHistoricoEscolar [disciplina=" + disciplina + ", situacao=" + situacao + ", periodo=" + periodo
+				+ "]";
+	}
+	
 }

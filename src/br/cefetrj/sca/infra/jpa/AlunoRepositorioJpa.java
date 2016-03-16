@@ -64,4 +64,27 @@ public class AlunoRepositorioJpa implements AlunoRepositorio {
 		return genericDao.alterar(p);
 	}
 
+	@Override
+	public List<Aluno> getAlunosByCursoEPeriodo(String siglaCurso, String periodo) {
+		String consulta = "SELECT a from Aluno a WHERE a.versaoCurso.curso.sigla = ?1 " +
+							" AND a.matricula LIKE ?2";
+		
+		// formado por Ano/Período, e.g, 2013/1
+		String [] auxAnoPeriodo = periodo.split("/");
+		
+		// No exemplo acima, 13 (últimos dois digitos do ano) + 1 (período letivo)
+		String periodoMatricula = auxAnoPeriodo[0].substring(auxAnoPeriodo[0].length() - 2) 
+									+ auxAnoPeriodo[1];
+		
+		Object [] array = {siglaCurso, periodoMatricula + "%"};
+		
+		try {
+			return genericDao.obterEntidades(consulta, array);
+		} catch(NoResultException ex) {
+			genericDao.logger.log(Level.SEVERE, ex.getMessage() + ": " + siglaCurso + " / " + periodo);
+			return null;
+		}
+		
+	}
+
 }

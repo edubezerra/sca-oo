@@ -9,7 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Transient;
 
 @Embeddable
-public final class PeriodoLetivo {
+public final class PeriodoLetivo implements Comparable<PeriodoLetivo>{
 	public enum EnumPeriodo {
 		PRIMEIRO, SEGUNDO
 	};
@@ -125,4 +125,9 @@ public final class PeriodoLetivo {
 		return new PeriodoLetivo(outroAno, outroPeriodo);
 	}
 
+	@Override
+	public int compareTo(PeriodoLetivo p) {
+		return 2* (this.ano - p.ano) + this.periodo.ordinal() - p.periodo.ordinal();
+	}
+	
 }

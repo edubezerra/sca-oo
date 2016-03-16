@@ -9,7 +9,9 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -29,6 +31,8 @@ public class ImportadorCursos {
 			"CH_TOTAL", "CREDITOS", "ENCARGO_DIDATICO", "IND_HORARIO", "SITUACAO", "COD_ESTRUTURADO", "NOME_UNIDADE",
 			"SIGLA_UNIDADE", "COD_CURSO", "NUM_VERSAO", "ID_VERSAO_CURSO", "IND_SIM_NAO" };
 
+	static String colunasPeriodoMinimo[] = {"COD_CURSO", "CURSO", "PERIODO_MINIMO", "NUM_VERSAO"};
+	
 	/**
 	 * Dicionário de pares (sigla, objeto da classe VersaoCurso) de cada
 	 * curso.
@@ -47,8 +51,13 @@ public class ImportadorCursos {
 	public static void main(String[] args) {
 		String planilhaCSTSI = "./planilhas/grades-curriculares/DisciplinasCSTSI.xls";
 		String planilhaBCC = "./planilhas/grades-curriculares/DisciplinasBCC.xls";
-		ImportadorCursos.run(planilhaCSTSI);
-		ImportadorCursos.run(planilhaBCC);
+		
+		String planilhaInfoPeriodoMinimo = "./planilhas/curso-periodo-minimo/curso_periodo_minimo.xls";
+		
+		//ImportadorCursos.run(planilhaCSTSI);
+		//ImportadorCursos.run(planilhaBCC);
+		
+		ImportadorCursos.mergeInfoPeriodo(planilhaInfoPeriodoMinimo);
 	}
 
 	public static void run(String arquivoPlanilha) {
@@ -61,6 +70,58 @@ public class ImportadorCursos {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		System.out.println("Feito!");
+	}
+	
+	/**
+	 * Método feito para importar a informação do período máximo dos cursos (esta informação está em outra planilha).
+	 * @param arquivoPlanilha
+	 */
+	public static void mergeInfoPeriodo(String arquivoPlanilha) {
+		System.out.println("ImportadorCursos.mergeInfoPeriodo()");
+		
+		try {
+			
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("SCAPU");
+
+			EntityManager em = emf.createEntityManager();
+
+			em.getTransaction().begin();
+			
+			File inputWorkbook = new File(arquivoPlanilha);
+			
+			Workbook w;
+
+			List<String> colunasList = Arrays.asList(colunasPeriodoMinimo);
+
+			WorkbookSettings ws = new WorkbookSettings();
+			ws.setEncoding("Cp1252");
+			w = Workbook.getWorkbook(inputWorkbook, ws);
+			Sheet sheet = w.getSheet(0);
+
+			for (int i = 1; i < sheet.getRows(); i++) {
+				String siglaCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
+				Integer qtdPeriodoMinimo = Integer.parseInt(sheet.getCell(colunasList.indexOf("PERIODO_MINIMO"), i).getContents());
+				String numeroVersao =sheet.getCell(colunasList.indexOf("NUM_VERSAO"), i).getContents();
+				
+				VersaoCurso versaoCurso = getVersaoCurso(siglaCurso, numeroVersao);
+				
+				if(versaoCurso != null) {
+					versaoCurso.setQtdPeriodoMinimo(qtdPeriodoMinimo);
+					
+					em.merge(versaoCurso);
+				}
+			}
+			
+			em.getTransaction().commit();
+
+			em.close();
+			
+		} catch(BiffException | IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
 		System.out.println("Feito!");
 	}
 
@@ -129,5 +190,17 @@ public class ImportadorCursos {
 				versoesCursos.put(siglaCurso + numVersao, versao);
 			}
 		}
+	}
+	
+	private static VersaoCurso getVersaoCurso(String siglaCurso, String numeroVersao) {
+		EntityManagerFactory emf = Persistence
+				.createEntityManagerFactory("SCAPU");
+		EntityManager em = emf.createEntityManager();
+		Query query = em
+				.createQuery("from VersaoCurso versao "
+						+ "where versao.numero = :numeroVersao and versao.curso.sigla = :siglaCurso");
+		query.setParameter("numeroVersao", numeroVersao);
+		query.setParameter("siglaCurso", siglaCurso);
+		return (VersaoCurso) query.getSingleResult();
 	}
 }

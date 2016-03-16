@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
@@ -29,6 +30,9 @@ public class ImportadorDisciplinas {
 			"COD_ESTRUTURADO", "NOME_UNIDADE", "SIGLA_UNIDADE", "COD_CURSO",
 			"NUM_VERSAO", "ID_VERSAO_CURSO", "IND_SIM_NAO" };
 
+	static String colunasPeriodoIdeal [] = {"COD_CURSO", "COD_DISCIPLINA", "COD_TURMA", "PERIODO_IDEAL", "NOME_DISCIPLINA", 
+			"VAGAS_OFERECIDAS", "DIA_SEMANA", "HR_INICIO", "HR_FIM", "TIPO_AULA", "NOME_UNIDADE", "ANO", "PERIODO"};
+	
 	private HashMap<String, Curso> cursos = new HashMap<>();
 	private HashMap<String, VersaoCurso> versoesCursos = new HashMap<>();
 
@@ -50,10 +54,77 @@ public class ImportadorDisciplinas {
 			arquivoPlanilha = "./planilhas/grades-curriculares/DisciplinasCSTSI.xls";
 			iim.importarPlanilha(arquivoPlanilha);
 			iim.gravarDadosImportados();
+			
+			
+			arquivoPlanilha = "./planilhas/turmas-ofertadas/BCC.2015.1.S.xls";
+			
+			iim.mergePeriodoIdeal(arquivoPlanilha);
+			
 		} catch (BiffException | IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		System.out.println("Feito!");
+	}
+
+	/**
+	 * Método feito para importar o período ideal dos cursos (esta informação está em outra planilha).
+	 * @param arquivoPlanilha
+	 */
+	private void mergePeriodoIdeal(String arquivoPlanilha) {
+		System.out.println("ImportadorDisciplinas.mergePeriodoIdeal()");
+		
+		try {
+			
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("SCAPU");
+
+			EntityManager em = emf.createEntityManager();
+
+			em.getTransaction().begin();
+			
+			File inputWorkbook = new File(arquivoPlanilha);
+			
+			Workbook w;
+
+			List<String> colunasList = Arrays.asList(colunasPeriodoIdeal);
+
+			WorkbookSettings ws = new WorkbookSettings();
+			ws.setEncoding("Cp1252");
+			w = Workbook.getWorkbook(inputWorkbook, ws);
+			Sheet sheet = w.getSheet(0);
+
+			for (int i = 1; i < sheet.getRows(); i++) {
+				String codDisciplina = sheet.getCell(colunasList.indexOf("COD_DISCIPLINA"), i).getContents();
+				Integer periodoIdeal = Integer.parseInt(sheet.getCell(colunasList.indexOf("PERIODO_IDEAL"), i).getContents());
+
+				Query query;
+				Disciplina d = null;
+				
+				try {
+					query = em.createQuery("from Disciplina d where d.codigo = :codigo");
+					query.setParameter("codigo", codDisciplina);
+					d = (Disciplina) query.getSingleResult();
+				} catch (NoResultException e) {
+					System.out.println("Disciplina nao encontrada: " + codDisciplina);
+					d = null;
+				}
+				
+				if(d != null) {
+					d.setPeriodoIdeal(periodoIdeal);
+					
+					em.merge(d);
+				}
+			}
+			
+			em.getTransaction().commit();
+
+			em.close();
+			
+		} catch(BiffException | IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
 		System.out.println("Feito!");
 	}
 

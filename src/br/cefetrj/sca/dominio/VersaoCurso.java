@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 @Entity
 public final class VersaoCurso {
@@ -23,6 +24,14 @@ public final class VersaoCurso {
 	@OneToMany(mappedBy = "versaoCurso", fetch=FetchType.EAGER)
 	List<Disciplina> disciplinas;
 
+	/**
+	 * Inteiro contendo a quantidade de períodos mínimos para um curso.
+	 */
+	private Integer qtdPeriodoMinimo;
+	
+	@Transient
+	private Integer periodoMaximo;
+	
 	@SuppressWarnings("unused")
 	private VersaoCurso() {
 		numero = null;
@@ -52,6 +61,22 @@ public final class VersaoCurso {
 
 	public void setCurso(Curso curso) {
 		this.curso = curso;
+	}
+
+	public Integer getQtdPeriodoMinimo() {
+		return qtdPeriodoMinimo;
+	}
+
+	public void setQtdPeriodoMinimo(Integer qtdPeriodoMinimo) {
+		if(qtdPeriodoMinimo == null || qtdPeriodoMinimo < 0)
+			throw new IllegalArgumentException("Valor invalido para o período mínimo para o término de um curso.");
+		
+		this.qtdPeriodoMinimo = qtdPeriodoMinimo;
+		this.periodoMaximo = (2 * qtdPeriodoMinimo) - 1;
+	}
+
+	public Integer getPeriodoMaximo() {
+		return periodoMaximo;
 	}
 
 	@Override

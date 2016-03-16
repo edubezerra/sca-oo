@@ -97,4 +97,18 @@ public class HistoricoEscolar {
 				situacao, periodo);
 		this.itens.add(item);
 	}
+	
+	public Set<ItemHistoricoEscolar> getItens() {
+		return itens;
+	}
+	
+	public Set<PeriodoLetivo> getPeriodosLetivosByItemHistoricoEscolar() {
+		Set<PeriodoLetivo> set = new HashSet<>();
+		
+		for(ItemHistoricoEscolar item: itens) {
+			set.add(item.getPeriodo());
+		}
+		
+		return set;
+	}
 }

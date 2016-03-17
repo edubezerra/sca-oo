@@ -63,6 +63,10 @@
 					<li><a class="btn-default"
 						href="${pageContext.request.contextPath}/professor/homeInclusao/">
 							Análise de Solicitações de Matrícula Fora do Prazo</a></li>
+							
+				    <li><a class="btn-default"
+	                    href="${pageContext.request.contextPath}/relatorioEvasao/homeEvasao">
+					        Relatório de Evasão</a></li>
 
 				</ul>
 

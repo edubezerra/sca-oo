@@ -21,6 +21,7 @@
 	<bean id="SolicitacaoMatriculaForaPrazoServiceBean"
 		class="br.cefetrj.sca.service.SolicitacaoMatriculaForaPrazoService" />
 	<bean id="TurmasCursadasServiceBean" class="br.cefetrj.sca.service.TurmasCursadasService" />
+	<bean id="RelatorioEvasaoServiceBean" class="br.cefetrj.sca.service.RelatorioEvasaoService" />
 
 	<!-- Fábricas -->
 	<bean id="AlunoFabricaBean" class="br.cefetrj.sca.dominio.AlunoFabrica" />

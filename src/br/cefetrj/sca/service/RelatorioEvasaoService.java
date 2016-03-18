@@ -1,5 +1,6 @@
 package br.cefetrj.sca.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -20,9 +21,11 @@ public class RelatorioEvasaoService {
 	@Autowired
 	AlunoRepositorio alunoRepo;
 	
-    TreeMap<PeriodoLetivo, Integer> alunosPorSemestre = new TreeMap<>();
+    private TreeMap<PeriodoLetivo, List<Aluno>> alunosPorSemestre;
 	
 	public void initTreeMap(PeriodoLetivo periodoLetivo){
+		
+		alunosPorSemestre = new TreeMap<>();
 		
 		PeriodoLetivo periodoAnalisar = periodoLetivo;
 		PeriodoLetivo periodoFimAnalisar = PeriodoLetivo.PERIODO_CORRENTE;
@@ -30,7 +33,7 @@ public class RelatorioEvasaoService {
 		PeriodoLetivo aux = periodoAnalisar;
 
 		while (aux.compareTo(periodoFimAnalisar) <= 0) {
-			alunosPorSemestre.put(aux, 0);
+			alunosPorSemestre.put(aux, new ArrayList<>());
 			aux = aux.proximo();
 		}
 	
@@ -51,9 +54,12 @@ public class RelatorioEvasaoService {
 			HistoricoEscolar hist = aluno.getHistorico();
 			
 			for(PeriodoLetivo periodo: hist.getPeriodosLetivosByItemHistoricoEscolar()){
-				Integer qtd = alunosPorSemestre.get(periodo) == null? 0 : alunosPorSemestre.get(periodo) ;
 				
-				alunosPorSemestre.put(periodo, ++qtd);
+				List<Aluno> alunos = alunosPorSemestre.get(periodo) == null? new ArrayList<>() : alunosPorSemestre.get(periodo);
+				
+				alunos.add(aluno);
+				
+				alunosPorSemestre.put(periodo, alunos);
 			}
 		}
 		
@@ -64,7 +70,7 @@ public class RelatorioEvasaoService {
 	
 			try {					
 				obj.put("Periodo Letivo", key);
-				obj.put("Alunos", alunosPorSemestre.get(key));
+				obj.put("Alunos", alunosPorSemestre.get(key).size());
 				
 				array.put(obj);
 			} catch(JSONException e) {

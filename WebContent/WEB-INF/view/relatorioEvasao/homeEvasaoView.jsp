@@ -80,7 +80,7 @@ button[type=submit]{
         <label for="curso">Curso:</label> 
         <select id="curso" name="curso" class="form-inputs">
          <option value="BCC">BCC</option>
-         <option value="TSI">TSI</option>
+         <option value="WEB">WEB</option>
         </select>
         <label for="periodo">Período Letivo:</label> <input type="text" id="periodo" placeholder="Ex: 2013/1" name="periodoLetivo" class="form-inputs">
         <br><br><br>
@@ -103,15 +103,17 @@ var data = ${data};
 
 if(data != ""){
 	
-var svg = dimple.newSvg("#chart", 590, 400);
-
-var myChart = new dimple.chart(svg, data);
-myChart.setBounds(65, 30, 505, 330)
-myChart.addCategoryAxis("x", "Periodo Letivo");
-myChart.addMeasureAxis("y", "Alunos");
-myChart.addSeries("Info", dimple.plot.bubble);
-myChart.addLegend(70, 10, 510, 20, "right");
-myChart.draw();
+	 var curso = "${curso}";
+		
+	 var svg = dimple.newSvg("#chart", 590, 400);
+	
+	 var myChart = new dimple.chart(svg, data);
+	 myChart.setBounds(65, 30, 505, 330)
+	 myChart.addCategoryAxis("x", "Periodo Letivo");
+	 myChart.addMeasureAxis("y", "Alunos");
+	 myChart.addSeries("Info. " + curso, dimple.plot.bubble);
+	 myChart.addLegend(70, 10, 510, 20, "right");
+	 myChart.draw();
 
 }
 </script>

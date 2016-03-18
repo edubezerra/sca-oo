@@ -52,6 +52,7 @@ public class RelatorioEvasaoController{
         	 
         	 JSONArray data = service.createDataResponse(curso, periodoLetivo);
         	 model.addAttribute("data", data.toString());
+        	 model.addAttribute("curso", curso);
         	 return "/relatorioEvasao/homeEvasaoView";
         	 
          }catch(Exception exc){

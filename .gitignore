@@ -7,3 +7,4 @@ log
 .project
 .classpath
 app.txt
+/bin/

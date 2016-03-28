@@ -1,8 +1,12 @@
 package br.cefetrj.sca.dominio;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Curso {
@@ -14,6 +18,12 @@ public class Curso {
 	String sigla;
 
 	String nome;
+
+	@OneToMany
+	List<Disciplina> disciplinas;
+
+	@OneToOne
+	Professor professor;
 
 	private Curso() {
 	}

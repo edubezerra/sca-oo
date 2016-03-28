@@ -29,6 +29,9 @@ public class Aluno {
 	@Embedded
 	Pessoa pessoa;
 
+	@OneToOne
+	ProcessoIsencao processoIsencao;
+
 	@OneToOne(cascade = CascadeType.ALL)
 	private HistoricoEscolar historico;
 
@@ -43,8 +46,7 @@ public class Aluno {
 	private Aluno() {
 	}
 
-	public Aluno(String nome, String cpf, String matricula,
-			VersaoCurso versaoCurso) {
+	public Aluno(String nome, String cpf, String matricula, VersaoCurso versaoCurso) {
 		if (cpf == null || cpf.equals("")) {
 			throw new IllegalArgumentException("CPF deve ser fornecido.");
 		}
@@ -56,9 +58,8 @@ public class Aluno {
 			throw new IllegalArgumentException("Matrícula não pode ser vazia.");
 		}
 		if (!(matricula.length() >= TAM_MIN_MATRICULA && matricula.length() <= TAM_MAX_MATRICULA)) {
-			throw new IllegalArgumentException("Matrícula deve ter entre "
-					+ TAM_MIN_MATRICULA + " e " + TAM_MAX_MATRICULA
-					+ " caracteres: " + matricula);
+			throw new IllegalArgumentException("Matrícula deve ter entre " + TAM_MIN_MATRICULA + " e "
+					+ TAM_MAX_MATRICULA + " caracteres: " + matricula);
 		}
 		this.pessoa = new Pessoa(nome, cpf);
 		this.matricula = matricula;
@@ -66,8 +67,8 @@ public class Aluno {
 		this.historico = new HistoricoEscolar(this.versaoCurso);
 	}
 
-	public Aluno(String nome, String cpf, String matricula,
-			VersaoCurso versaoCurso, Date dataNascimento, String enderecoEmail) {
+	public Aluno(String nome, String cpf, String matricula, VersaoCurso versaoCurso, Date dataNascimento,
+			String enderecoEmail) {
 		this(nome, cpf, matricula, versaoCurso);
 		this.pessoa = new Pessoa(nome, dataNascimento, enderecoEmail);
 	}
@@ -112,12 +113,11 @@ public class Aluno {
 	}
 
 	public void registrarMatricula(Turma turma) {
-		this.historico.lancar(turma.getDisciplina(),
-				EnumSituacaoAvaliacao.MATRICULA, turma.getPeriodo());
+		this.historico.lancar(turma.getDisciplina(), EnumSituacaoAvaliacao.MATRICULA, turma.getPeriodo());
 	}
 
-	public void registrarNoHistoricoEscolar(Disciplina disciplina,
-			EnumSituacaoAvaliacao situacaoFinal, PeriodoLetivo semestre) {
+	public void registrarNoHistoricoEscolar(Disciplina disciplina, EnumSituacaoAvaliacao situacaoFinal,
+			PeriodoLetivo semestre) {
 		HistoricoEscolar he = this.getHistorico();
 		he.lancar(disciplina, situacaoFinal, semestre);
 	}
@@ -126,6 +126,5 @@ public class Aluno {
 	public String toString() {
 		return "Aluno [matricula=" + matricula + ", pessoa=" + pessoa + "]";
 	}
-	
-	
+
 }

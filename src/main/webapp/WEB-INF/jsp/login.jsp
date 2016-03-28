@@ -17,7 +17,7 @@
          </c:if>
          <c:if test="${param.logout != null}">
              <div class="alert alert-success">
-                 Logout realiado com sucesso.
+                 Logout realizado com sucesso.
              </div>
          </c:if>	
          </div>  

@@ -47,30 +47,40 @@
 		<sec:authorize access="hasRole('ROLE_ALUNO')">
 			<h3>Aluno</h3>
 			<ul>
-				<li><a href="${pageContext.request.contextPath}/avaliacaoTurma/avaliacaoTurmas">
+				<li><a
+					href="${pageContext.request.contextPath}/avaliacaoTurma/avaliacaoTurmas">
 						Avaliação de Turmas por Discentes </a></li>
-				<li><a href="${pageContext.request.contextPath}/inclusaoDisciplina/homeInclusao">
+				<li><a
+					href="${pageContext.request.contextPath}/inclusaoDisciplina/homeInclusao">
 						Inclusão de Disciplina Fora de Prazo</a></li>
-				<li><a href="${pageContext.request.contextPath}/avaliacaoEgresso/escolherAvaliacao">
+				<li><a
+					href="${pageContext.request.contextPath}/avaliacaoEgresso/escolherAvaliacao">
 						Avaliação de Curso por Egresso</a></li>
+
+				<li><a
+					href="${pageContext.request.contextPath}/isencaoDisciplinaController/isencaoDisciplina">
+						Isenção de Disciplina </a></li>
 			</ul>
 		</sec:authorize>
 
 		<sec:authorize access="hasRole('ROLE_PROFESSOR')">
-		<h3>Professor</h3>
-		<ul>
+			<h3>Professor</h3>
+			<ul>
 
-			<li><a
-				href="${pageContext.request.contextPath}/gradedisponibilidades/apresentarFormulario">
-					Fornecimento de Grade de Disponibilidades
-					(${requestScope.periodoLetivo})</a></li>
+				<li><a
+					href="${pageContext.request.contextPath}/gradedisponibilidades/apresentarFormulario">
+						Fornecimento de Grade de Disponibilidades
+						(${requestScope.periodoLetivo})</a></li>
 
-			<li><a href="${pageContext.request.contextPath}/professor/homeInclusao/"> Análise de
-					Solicitações de Matrícula Fora do Prazo</a></li>
-		</ul>
+				<li><a
+					href="${pageContext.request.contextPath}/professor/homeInclusao/">
+						Análise de Solicitações de Matrícula Fora do Prazo</a></li>
+			</ul>
 		</sec:authorize>
 
-		<h3><a href="logout">Logout</a></h3>
+		<h3>
+			<a href="logout">Logout</a>
+		</h3>
 	</div>
 </body>
 </html>

@@ -19,6 +19,14 @@ public class ProcessoIsencao {
 	@OneToMany
 	List<ItemIsencao> listaItenIsencao;
 
+	public List<ItemIsencao> getListaItenIsencao() {
+		return listaItenIsencao;
+	}
+
+	public void setListaItenIsencao(List<ItemIsencao> listaItenIsencao) {
+		this.listaItenIsencao = listaItenIsencao;
+	}
+
 	public Long getId() {
 		return id;
 	}

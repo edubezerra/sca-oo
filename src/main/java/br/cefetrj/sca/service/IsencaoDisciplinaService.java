@@ -41,13 +41,14 @@ public class IsencaoDisciplinaService {
 			System.out.println("IsencaoDisciplinaService - Professor não encontrado!");
 		return null;
 	}
-	/*
-	 * public List<Disciplina> findDisciplinas(String siglaCurso) {
-	 * List<Disciplina> disciplinas = disciplinaRepo.findBySigla(siglaCurso); if
-	 * (disciplinas.isEmpty()) { System.out.println(
-	 * "IsencaoDisciplinaService - Lista de disciplinas está vazia!"); return
-	 * null; } else
-	 * 
-	 * return disciplinas; }
-	 */
+
+	public List<Disciplina> findDisciplinas(String siglaCurso) {
+		List<Disciplina> disciplinas = disciplinaRepo.findBySigla(siglaCurso);
+		if (disciplinas.isEmpty()) {
+			System.out.println("IsencaoDisciplinaService - Lista de disciplinas está vazia!");
+			return null;
+		} else
+			return disciplinas;
+	}
+
 }

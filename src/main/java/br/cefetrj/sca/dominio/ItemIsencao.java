@@ -6,6 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+import br.cefetrj.sca.dominio.inclusaodisciplina.Comprovante;
 
 @Entity
 public class ItemIsencao {
@@ -16,8 +19,12 @@ public class ItemIsencao {
 
 	private String situacao;
 	private Date dataAnalise;
+	
 	@ManyToOne
 	Disciplina disciplina;
+	
+	@OneToOne
+	Comprovante comprovante;
 
 	public String getSituacao() {
 		return situacao;

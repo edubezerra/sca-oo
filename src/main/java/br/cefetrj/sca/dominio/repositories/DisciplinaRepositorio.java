@@ -23,8 +23,8 @@ public interface DisciplinaRepositorio extends JpaRepository<Disciplina, Seriali
 	@Query("from Disciplina d where d.nome = ?1 " + "and d.versaoCurso.curso.sigla = ?2"
 			+ " and d.versaoCurso.numero = ?3")
 	Disciplina findByNomeEmVersaoCurso(String nomeDisciplina, String siglaCurso, String numeroVersaoCurso);
-	/*
-	 * @Query("from Disciplina d where d.versaoCurso.curso.sigla = ?1 " )
-	 * List<Disciplina> findBySigla(String siglaCurso);
-	 */
+
+	@Query("from Disciplina d where d.versaoCurso.curso.sigla = ?1 ORDER BY d.nome ")
+	List<Disciplina> findBySigla(String siglaCurso);
+
 }

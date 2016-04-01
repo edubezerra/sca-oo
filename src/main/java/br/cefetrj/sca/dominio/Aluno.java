@@ -73,6 +73,14 @@ public class Aluno {
 		this.pessoa = new Pessoa(nome, dataNascimento, enderecoEmail);
 	}
 
+	public ProcessoIsencao getProcessoIsencao() {
+		return processoIsencao;
+	}
+
+	public void setProcessoIsencao(ProcessoIsencao processoIsencao) {
+		this.processoIsencao = processoIsencao;
+	}
+
 	public String getNome() {
 		return this.pessoa.getNome();
 	}

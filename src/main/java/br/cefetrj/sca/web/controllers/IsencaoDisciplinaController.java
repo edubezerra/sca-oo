@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
+import br.cefetrj.sca.dominio.ProcessoIsencao;
 import br.cefetrj.sca.service.IsencaoDisciplinaService;
 
 @Controller
@@ -50,7 +51,7 @@ public class IsencaoDisciplinaController {
 
 	@RequestMapping(value = "/validaComprovante", method = RequestMethod.POST)
 	public String validaComprovante(Model model, HttpServletRequest request, HttpSession session,
-			@RequestParam("file") MultipartFile file ) {
+			@RequestParam("file") MultipartFile file) {
 
 		try {
 
@@ -59,20 +60,18 @@ public class IsencaoDisciplinaController {
 
 			String checkboxes[] = request.getParameterValues("choice");
 
-			
-
 			for (int i = 0; i < checkboxes.length; i++) {
 				System.out.println("CheckBox - " + checkboxes[i]);
 			}
 
-			/*
-			 * if (aluno.getProcessoIsencao() != null) {
-			 * request.getParameter("choice");
-			 * 
-			 * 
-			 * } else { ProcessoIsencao pi = new ProcessoIsencao();
-			 * request.getParameter("choice"); }
-			 */
+			if (aluno.getProcessoIsencao() != null) {
+				request.getParameter("choice");
+
+			} else {
+				ProcessoIsencao pi = new ProcessoIsencao();
+				request.getParameter("choice");
+			}
+
 			return "/isencaoDisciplina/alunoSucesso";
 
 		} catch (Exception exc) {

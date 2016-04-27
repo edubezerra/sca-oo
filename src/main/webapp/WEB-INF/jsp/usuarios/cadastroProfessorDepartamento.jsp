@@ -7,11 +7,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>SCA - Lista de Usuários</title>
 
-	<link href="<c:url value='/resources/bootstrap/css/bootstrap.css' />" rel="stylesheet" />
-	<link href="<c:url value='/resources/css/usuarios.css' />" rel="stylesheet" />
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<link href="<c:url value='/resources/bootstrap/css/bootstrap.css' />"
+	rel="stylesheet" />
+<link href="<c:url value='/resources/css/usuarios.css' />"
+	rel="stylesheet" />
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 </head>
 
@@ -32,25 +37,17 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${users}" var="user">
+					<c:forEach items="${professores}" var="professor">
 						<tr>
-							<td>${user.nome}</td>
-							<td>${user.login}</td>
-							<td>${user.email}</td>
-							<td>
-							<div class="dropdown">
-									<button class="btn btn-primary dropdown-toggle" type="button"
-										data-toggle="dropdown">
-										Departamento <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu">
-										<li><a href="#">HTML</a></li>
-										<li><a href="#">CSS</a></li>
-										<li><a href="#">JavaScript</a></li>
-									</ul>
-								</div>
-								</div>
-							</td>
+						    <td>${professor.pessoa.nome}</td>
+							<td>${professor.matricula}</td>
+							<td>${professor.pessoa.email}</td>
+
+							<td><select class="selectpicker">
+									<c:forEach items="${departamentos}" var="departamento">
+										<option>${departamento.sigla}</option>
+									</c:forEach>
+							</select></td>
 
 						</tr>
 					</c:forEach>
@@ -58,7 +55,8 @@
 			</table>
 		</div>
 		<div class="well">
-			<a href="<c:url value='/usuarios/newuser' />">Adicionar Novo Usuário</a>
+			<a href="<c:url value='/usuarios/newuser' />">Adicionar Novo
+				Usuário</a>
 		</div>
 	</div>
 </body>

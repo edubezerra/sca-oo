@@ -19,6 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import br.cefetrj.sca.dominio.Departamento;
+import br.cefetrj.sca.dominio.Professor;
+import br.cefetrj.sca.dominio.repositories.DepartamentoRepositorio;
+import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
 import br.cefetrj.sca.dominio.usuarios.PerfilUsuario;
 import br.cefetrj.sca.dominio.usuarios.Usuario;
 import br.cefetrj.sca.service.UserProfileService;
@@ -40,13 +44,18 @@ public class UsuarioController {
 	MessageSource messageSource;
 
 	@Autowired
+	ProfessorRepositorio professorRepo;
+
+	@Autowired
+	DepartamentoRepositorio departamentoRepo;
+
+	@Autowired
 	public void setUserService(UsuarioService userService) {
 		UsuarioController.userService = userService;
 	}
 
 	public static Usuario getCurrentUser() {
-		Object principal = SecurityContextHolder.getContext()
-				.getAuthentication().getPrincipal();
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if (principal instanceof UserDetails) {
 			String login = ((UserDetails) principal).getUsername();
 			Usuario loginUser = userService.findUserByLogin(login);
@@ -64,15 +73,18 @@ public class UsuarioController {
 
 		List<Usuario> users = userService.findAll();
 		model.addAttribute("users", users);
+
 		return "/usuarios/userslist";
 	}
-	
+
 	@RequestMapping(value = { "/", "/listProfessorDepartamento" }, method = RequestMethod.GET)
 	public String listProfessorByDepartamento(ModelMap model) {
-		
-		List<Usuario> users = userService.findAll();
-		model.addAttribute("users", users);
-		
+
+		List<Professor> professores = professorRepo.findProfessores();
+		List<Departamento> departamentos = departamentoRepo.findDepartamentos();
+	    model.addAttribute("departamentos", departamentos);
+		model.addAttribute("professores", professores);
+
 		return "/usuarios/cadastroProfessorDepartamento";
 	}
 
@@ -92,8 +104,7 @@ public class UsuarioController {
 	 * saving user in database. It also validates the user input
 	 */
 	@RequestMapping(value = { "/newuser" }, method = RequestMethod.POST)
-	public String saveUser(@Valid Usuario user, BindingResult result,
-			ModelMap model) {
+	public String saveUser(@Valid Usuario user, BindingResult result, ModelMap model) {
 
 		if (result.hasErrors()) {
 			model.addAttribute("user", user);
@@ -101,18 +112,15 @@ public class UsuarioController {
 		}
 
 		if (!userService.isLoginJaExistente(user.getId(), user.getLogin())) {
-			FieldError loginError = new FieldError("user", "login",
-					messageSource.getMessage("non.unique.login",
-							new String[] { user.getLogin() },
-							Locale.getDefault()));
+			FieldError loginError = new FieldError("user", "login", messageSource.getMessage("non.unique.login",
+					new String[] { user.getLogin() }, Locale.getDefault()));
 			result.addError(loginError);
 			return "/usuarios/registration";
 		}
 
 		userService.saveUser(user);
 
-		model.addAttribute("success", "Usuário " + user.getNome()
-				+ " registrado com sucesso");
+		model.addAttribute("success", "Usuário " + user.getNome() + " registrado com sucesso");
 
 		return "/usuarios/registrationsuccess";
 	}
@@ -133,8 +141,7 @@ public class UsuarioController {
 	 * para atualizar um usuário. Ele também valida os dados fornecidos.
 	 */
 	@RequestMapping(value = { "/edit-user-{login}" }, method = RequestMethod.POST)
-	public String updateUser(@Valid Usuario user, BindingResult result,
-			ModelMap model, @PathVariable String login) {
+	public String updateUser(@Valid Usuario user, BindingResult result, ModelMap model, @PathVariable String login) {
 
 		if (result.hasErrors()) {
 			model.addAttribute("user", user);
@@ -143,8 +150,7 @@ public class UsuarioController {
 
 		userService.updateUser(user);
 
-		model.addAttribute("success", "Usuário " + user.getNome()
-				+ " atualizado com sucesso");
+		model.addAttribute("success", "Usuário " + user.getNome() + " atualizado com sucesso");
 		return "/usuarios/registrationsuccess";
 	}
 

@@ -33,7 +33,9 @@ public class Professor {
 	private Set<GradeDisponibilidade> grades;
 
 	@ManyToMany(cascade = CascadeType.MERGE)
-	@JoinTable(name = "PROFESSOR_DISCIPLINA", joinColumns = { @JoinColumn(name = "PROFESSOR_ID", referencedColumnName = "ID") }, inverseJoinColumns = { @JoinColumn(name = "DISCIPLINA_ID", referencedColumnName = "ID") })
+	@JoinTable(name = "PROFESSOR_DISCIPLINA", joinColumns = {
+			@JoinColumn(name = "PROFESSOR_ID", referencedColumnName = "ID") }, inverseJoinColumns = {
+					@JoinColumn(name = "DISCIPLINA_ID", referencedColumnName = "ID") })
 	private Set<Disciplina> habilitacoes = new HashSet<>();
 
 	@Embedded
@@ -41,6 +43,14 @@ public class Professor {
 
 	public Long getId() {
 		return id;
+	}
+
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
 	}
 
 	@SuppressWarnings("unused")
@@ -67,8 +77,7 @@ public class Professor {
 		// + TAMANHO_MATRICULA + ".");
 		// }
 		if (!contemApenasDigitos(matricula)) {
-			throw new IllegalArgumentException(
-					"Matrícula deve conter apenas dígitos: " + matricula + ".");
+			throw new IllegalArgumentException("Matrícula deve conter apenas dígitos: " + matricula + ".");
 		}
 		this.matricula = matricula;
 	}
@@ -113,7 +122,7 @@ public class Professor {
 
 	public void removerHabilitacoes(List<String> nomesDisciplinas) {
 		for (String nome : nomesDisciplinas) {
-			
+
 		}
 		// TODO Auto-generated method stub
 

@@ -66,6 +66,15 @@ public class UsuarioController {
 		model.addAttribute("users", users);
 		return "/usuarios/userslist";
 	}
+	
+	@RequestMapping(value = { "/", "/listProfessorDepartamento" }, method = RequestMethod.GET)
+	public String listProfessorByDepartamento(ModelMap model) {
+		
+		List<Usuario> users = userService.findAll();
+		model.addAttribute("users", users);
+		
+		return "/usuarios/cadastroProfessorDepartamento";
+	}
 
 	/**
 	 * Esse método fornece um meio de adicionar um novo usuário.

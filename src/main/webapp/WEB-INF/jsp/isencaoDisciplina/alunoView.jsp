@@ -22,7 +22,7 @@
 	<br></br>
 
 	<div class="table-responsive">
-		<form action="${pageContext.request.contextPath}/isencaoDisciplinaController/validaComprovante"  enctype="multipart/form-data" method="POST">
+		<form action="${pageContext.request.contextPath}/isencaoDisciplina/validaComprovante"  enctype="multipart/form-data" method="POST">
 		 <label for="inputFile">Anexar comprovante de solicitação
 								de matrícula do período atual (Formatos aceitos: PDF, JPEG ou
 								PNG. Tamanho Máximo: 10mb)</label>

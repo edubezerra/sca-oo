@@ -19,6 +19,8 @@ public class Comprovante {
 	
 	private String nome;
 	
+	public static byte TAMANHO_MAXIMO_COMPROVANTE = (byte) 100000;
+	
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	private byte[] data;

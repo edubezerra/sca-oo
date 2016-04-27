@@ -29,6 +29,8 @@
 			<a href="${rootUrl}admin">Administration</a>
 			<li><a href="${pageContext.request.contextPath}/usuarios/list">
 					Listar usuários </a></li>
+			<li><a href="${pageContext.request.contextPath}/usuarios/listProfessorDepartamento">
+					Cadastrar Professor por Departamento </a></li>
 		</sec:authorize>
 	</h3>
 

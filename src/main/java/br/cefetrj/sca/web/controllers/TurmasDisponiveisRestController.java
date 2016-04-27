@@ -24,7 +24,7 @@ public class TurmasDisponiveisRestController {
 		List<Turma> turmas = service
 				.findTurmasByPeriodoLetivo(PeriodoLetivo.PERIODO_CORRENTE);
 		List<Turma> turmasSelecionadas = new ArrayList<>();
-		for (Turma turma : turmas) {
+		for (Turma turma : turmas){
 			if (turma.getNomeDisciplina().startsWith("GCC")) {
 				turmasSelecionadas.add(turma);
 			}

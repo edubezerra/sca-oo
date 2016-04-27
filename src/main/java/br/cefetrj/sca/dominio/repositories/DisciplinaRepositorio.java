@@ -29,4 +29,11 @@ public interface DisciplinaRepositorio extends
 
 	@Query("from Disciplina d where d.versaoCurso = ?1")
 	List<Disciplina> findAllEmVersaoCurso(VersaoCurso versaoCurso);
+	
+	/*
+	 * @Query("from Disciplina d where d.versaoCurso.curso.sigla = ?1 " )-	 * 	List<Disciplina> findBySigla(String siglaCurso);
+	 */
+
+	@Query("from Disciplina d where d.versaoCurso.curso.sigla = ?1 ORDER BY d.nome ")
+	List<Disciplina> findBySigla(String siglaCurso);
 }

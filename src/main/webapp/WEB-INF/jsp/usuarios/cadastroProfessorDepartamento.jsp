@@ -22,41 +22,45 @@
 
 <body>
 	<div class="generic-container">
+
 		<div class="panel panel-default">
-			<!-- Default panel contents -->
-			<div class="panel-heading">
-				<span class="lead">Lista de Usuários</span>
-			</div>
-			<table class="table table-hover">
-				<thead>
-					<tr>
-						<th>Nome</th>
-						<th>Login</th>
-						<th>Email</th>
-						<th>Departamento</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach items="${professores}" var="professor">
+			<form action="" method="post">
+				<!-- Default panel contents -->
+				<div class="panel-heading">
+					<span class="lead">Lista de Usuários</span>
+				</div>
+				<table class="table table-hover">
+					<thead>
 						<tr>
-						    <td>${professor.pessoa.nome}</td>
-							<td>${professor.matricula}</td>
-							<td>${professor.pessoa.email}</td>
-
-							<td><select class="selectpicker">
-									<c:forEach items="${departamentos}" var="departamento">
-										<option>${departamento.sigla}</option>
-									</c:forEach>
-							</select></td>
-
+							<th>Nome</th>
+							<th>Login</th>
+							<th>Email</th>
+							<th>Departamento</th>
 						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-		</div>
-		<div class="well">
-			<a href="<c:url value='/usuarios/newuser' />">Adicionar Novo
-				Usuário</a>
+					</thead>
+
+					<tbody>
+
+						<c:forEach varStatus="i" items="${professores}" var="professor">
+							<input name="matricula${i.index}" value="${professor.matricula}"
+								type="hidden" />
+							<tr>
+								<td>${professor.pessoa.nome}</td>
+								<td>${professor.matricula}</td>
+								<td>${professor.pessoa.email}</td>
+
+								<td><select name="departamento${i.index}" required>
+										<option value="" class="form-control" label="Selecionar..."
+											selected disabled></option>
+										<c:forEach items="${departamentos}" var="departamento">
+											<option value="${departamento.id}">${departamento.sigla}</option>
+										</c:forEach>
+								</select></td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</form>
 		</div>
 	</div>
 </body>

@@ -24,7 +24,7 @@ public class IsencaoDisciplinaService {
 	private DisciplinaRepositorio disciplinaRepo;
 
 	public Aluno findAlunoByMatricula(String matricula) {
-		System.out.println("Matricula aluno: " + matricula);
+		
 				
 		Aluno aluno = alunoRepo.findAlunoByMatricula(matricula);
 		if (aluno != null)

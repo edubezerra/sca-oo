@@ -36,7 +36,7 @@ public class IsencaoDisciplinaController {
 		String matricula = UsuarioController.getCurrentUser().getLogin();
 		session.setAttribute("login", matricula);
 		try {
-			System.out.println("Matricula - " + matricula);
+			
 			Aluno aluno = is.findAlunoByMatricula(matricula);
 
 			String siglaCurso = aluno.getVersaoCurso().getCurso().getSigla();
@@ -45,7 +45,7 @@ public class IsencaoDisciplinaController {
 			model.addAttribute("aluno", aluno);
 			model.addAttribute("disciplinas", disciplinas);
 
-			return "/isencaoDisciplina/alunoView";
+			return "/isencaoDisciplina/aluno/alunoView";
 
 		} catch (Exception exc) {
 
@@ -77,7 +77,7 @@ public class IsencaoDisciplinaController {
 				ProcessoIsencao pi = new ProcessoIsencao();
 				request.getParameter("choice");
 			}
-			return "/isencaoDisciplina/alunoSucesso";
+			return "/isencaoDisciplina/aluno/alunoSucesso";
 		} catch (Exception exc) {
 
 			model.addAttribute("error", exc.getMessage());

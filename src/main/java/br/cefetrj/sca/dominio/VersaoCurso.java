@@ -172,6 +172,10 @@ public final class VersaoCurso {
 		this.periodoMaximo = (2 * qtdPeriodoMinimo) - 1;
 	}
 
+	public Integer getPeriodoMinimo(){
+		return qtdPeriodoMinimo;
+	}
+	
 	public Integer getPeriodoMaximo() {
 		return periodoMaximo;
 	}

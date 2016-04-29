@@ -5,10 +5,7 @@
 <head>
 <meta content="charset=UTF-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link rel="stylesheet"
-		href="${pageContext.request.contextPath}/css/vendor/bootstrap.min.css">
-	<link rel="stylesheet"
-		href="${pageContext.request.contextPath}/css/style.css">
+    <link href="/sca/resources/bootstrap/css/bootstrap.css" media="screen" rel="stylesheet" type="text/css" />
 		<script src='//assets.codepen.io/assets/common/stopExecutionOnTimeout.js?t=1'></script>
 		<script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 		<script src='http://d3js.org/d3.v3.min.js'></script>
@@ -116,12 +113,22 @@ button[type=submit]{
       
       <div id="RecallsChart" class="chart"></div><div id="RecallDetails"></div>
      
+     <c:choose>
+	 	<c:when test="${empty data}">
+	 		<c:set var="jsonData" value="''"/>
+	 	</c:when>
+	 	<c:otherwise>
+	 		<c:set var="jsonData" value="${data}"/>
+	 	</c:otherwise>
+	 </c:choose>
+	 
+     
  </div>
 
 </body>
  
 <script type="text/javascript">
-var data = ${data};
+var data = ${jsonData};
 
 if(data != ""){
 	

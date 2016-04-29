@@ -82,8 +82,11 @@
 				<li><a href="${pageContext.request.contextPath}/relatorioEvasao/homeEvasao">
 					        Relatório de Evasão</a></li>
 					        
-			     <li><a class="btn-default" href="${pageContext.request.contextPath}/relatorioRetencao/homeRetencao">
+			     <li><a href="${pageContext.request.contextPath}/relatorioRetencao/homeRetencao">
 					        Relatório de Retenção</a></li>
+			     
+			     <li><a href="${pageContext.request.contextPath}/relatorioReprovacaoTurma/homeReprovacaoTurma">
+					        Relatório de Reprovação por Turma</a></li>
 			    
 			</ul>
 		</sec:authorize>

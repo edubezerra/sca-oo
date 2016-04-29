@@ -38,10 +38,8 @@ public class RelatorioRetencaoService {
 		
         PeriodoLetivo periodoMinimo = new PeriodoLetivo(Integer.parseInt(periodoInfos[0]),Integer.parseInt(periodoInfos[1]));
         
-        //int qtdPeriodoMinimo = alunosList.get(0).getVersaoCurso().getPeriodoMinimo();
-        
-        int qtdPeriodoMinimo = 6;
-        
+        int qtdPeriodoMinimo = alunosList.get(0).getVersaoCurso().getPeriodoMinimo();
+
         for(int i = 0; i < qtdPeriodoMinimo; i++){
         	
         	periodoMinimo = periodoMinimo.proximo();

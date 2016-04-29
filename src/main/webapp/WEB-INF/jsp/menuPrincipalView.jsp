@@ -81,6 +81,10 @@
 						
 				<li><a href="${pageContext.request.contextPath}/relatorioEvasao/homeEvasao">
 					        Relatório de Evasão</a></li>
+				
+				<li><a href="${pageContext.request.contextPath}/relatorioReprovacaoTurma/homeReprovacaoTurma">
+					        Relatório de Reprovação por Turma</a></li>
+			
 			</ul>
 		</sec:authorize>
 

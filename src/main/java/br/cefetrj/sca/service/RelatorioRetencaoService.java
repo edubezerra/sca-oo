@@ -27,27 +27,11 @@ public class RelatorioRetencaoService {
 	CursoRepositorio cursoRepo;
 	
     private TreeMap<PeriodoLetivo, List<Aluno>> alunosRetencao;
-    
-	public void initTreeMap(PeriodoLetivo periodoLetivo){
-		
-		alunosRetencao = new TreeMap<>();
-		
-		PeriodoLetivo periodoAnalisar = periodoLetivo;
-		PeriodoLetivo periodoFimAnalisar = PeriodoLetivo.PERIODO_CORRENTE;
-		
-		PeriodoLetivo aux = periodoAnalisar;
-
-		while (aux.compareTo(periodoFimAnalisar) <= 0) {
-			alunosRetencao.put(aux, new ArrayList<>());
-			aux = aux.proximo();
-		}
-	
-	}
 	
     public JSONArray createDataResponse(String siglaCurso, String periodoLetivo){
-		
+    	alunosRetencao = new TreeMap<>();
+    	
 		String[] periodoInfos = periodoLetivo.split("/");
-		
 		String periodoMatricula = periodoInfos[0].substring(periodoInfos[0].length() - 2) + periodoInfos[1];
 		
 		List<Aluno> alunosList = alunoRepo.getAlunosByCursoEPeriodo(siglaCurso, periodoMatricula);
@@ -63,8 +47,6 @@ public class RelatorioRetencaoService {
         	periodoMinimo = periodoMinimo.proximo();
         	
         }
-        
-        initTreeMap(periodoMinimo);
         
 		for(Aluno aluno: alunosList) {
 			

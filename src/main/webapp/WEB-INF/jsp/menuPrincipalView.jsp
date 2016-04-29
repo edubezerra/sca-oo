@@ -78,6 +78,9 @@
 				<li><a
 					href="${pageContext.request.contextPath}/matriculaForaPrazo/analise/homeInclusao/">
 						Análise de Matrículas Fora do Prazo</a></li>
+						
+				<li><a href="${pageContext.request.contextPath}/relatorioEvasao/homeEvasao">
+					        Relatório de Evasão</a></li>
 			</ul>
 		</sec:authorize>
 

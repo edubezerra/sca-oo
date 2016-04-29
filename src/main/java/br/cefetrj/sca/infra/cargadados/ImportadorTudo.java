@@ -30,24 +30,24 @@ public class ImportadorTudo {
 
 	public void run() {
 		try {
-			new ImportadorQuestionarioAvaliacaoTurmas().run();
-			new ImportadorCursos().run();
-			new ImportadorDisciplinas().run();
-			new ImportadorPreReqs().run();
-			new ImportadorAlunos().run();
-			new ImportadorDocentes().run();
-			new ImportadorDepartamentos().run();
-
-//			new ImportadorHistoricosEscolares().run();
-			
-			new ImportadorTurmasComInscricoes().run();
-			new ImportadorAlocacoesProfessoresEmTurmas().run();
-			new ImportadorAtividadesComp().run();
-			new ImportadorHabilitacoesParaProfessor().run();
-			
-			new ImportadorAlocacoesProfessoresEmDepartamentos().run();
-			
-			new ImportadorAlocacoesDisciplinasEmDepartamentos().run();
+//			new ImportadorQuestionarioAvaliacaoTurmas().run();
+//			new ImportadorCursos().run();
+//			new ImportadorDisciplinas().run();
+//			new ImportadorPreReqs().run();
+//			new ImportadorAlunos().run();
+//			new ImportadorDocentes().run();
+//			new ImportadorDepartamentos().run();
+//
+			new ImportadorHistoricosEscolares().run();
+//			
+//			new ImportadorTurmasComInscricoes().run();
+//			new ImportadorAlocacoesProfessoresEmTurmas().run();
+//			new ImportadorAtividadesComp().run();
+//			new ImportadorHabilitacoesParaProfessor().run();
+//			
+//			new ImportadorAlocacoesProfessoresEmDepartamentos().run();
+//			
+//			new ImportadorAlocacoesDisciplinasEmDepartamentos().run();
 			
 		} catch (IllegalArgumentException | IllegalStateException ex) {
 			System.err.println(ex.getMessage());

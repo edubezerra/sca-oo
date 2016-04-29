@@ -127,8 +127,7 @@ public final class PeriodoLetivo implements Comparable<PeriodoLetivo> {
 
 	@Override
 	public int compareTo(PeriodoLetivo outro) {
-		// TODO Auto-generated method stub
-		return 0;
+		return 2* (this.ano - outro.ano) + this.periodo.ordinal() - outro.periodo.ordinal();
 	}
 
 	public PeriodoLetivo sucessor(PeriodoLetivo outro) {

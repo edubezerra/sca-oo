@@ -170,4 +170,14 @@ public class HistoricoEscolar {
 		ItemHistoricoEscolar item = new ItemHistoricoEscolar(disciplina, situacao, periodo);
 		this.itens.add(item);
 	}
+	
+	public Set<PeriodoLetivo> getPeriodosLetivosByItemHistoricoEscolar() {
+		Set<PeriodoLetivo> set = new HashSet<>();
+		
+		for(ItemHistoricoEscolar item: itens) {
+			set.add(item.getPeriodoLetivo());
+		}
+		
+		return set;
+	}
 }

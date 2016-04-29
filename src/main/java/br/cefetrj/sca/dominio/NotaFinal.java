@@ -25,6 +25,16 @@ public class NotaFinal {
 	@Autowired
 	private EstrategiaAvaliacaoAluno estrategia;
 
+	public NotaFinal(Long id) {
+		this.id = id;
+	}
+	
+	public NotaFinal(BigDecimal notaP1, BigDecimal notaP2, BigDecimal notaP3){
+		setNotaP1(notaP1);
+		setNotaP2(notaP2);
+		setNotaP3(notaP3);
+	}
+	
 	private NotaFinal() {
 	}
 

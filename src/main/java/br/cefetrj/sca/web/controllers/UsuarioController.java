@@ -89,6 +89,14 @@ public class UsuarioController {
 
 		List<Professor> professores = professorRepo.findProfessores();
 		List<Departamento> departamentos = departamentoRepo.findDepartamentos();
+
+		for (int i = 0; i < professores.size(); i++) {
+			//verifica se o Professor está associado à algum Departamento
+			if (departamentoRepo.findDepartamentoByProfessor(professores.get(i).getMatricula()) != null) {
+				professores.remove(professores.get(i));
+
+			}
+		}
 		model.addAttribute("departamentos", departamentos);
 		model.addAttribute("professores", professores);
 
@@ -121,10 +129,11 @@ public class UsuarioController {
 					// System.out.println("Substring Professor: " +
 					// matriculas.get(i).substring(0, tracoMat - 1));
 					// System.out.println("Nome Professor: " + p.getNome());
-					
+
 					d.addProfessor(p);// Verificar erro do add!
-					
-					/* Fazer update no banco!
+
+					/*
+					 * Fazer update no banco!
 					 * 
 					 * Departamento.professores
 					 */

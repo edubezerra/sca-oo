@@ -3,6 +3,8 @@ package br.cefetrj.sca.web.controllers;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -17,7 +20,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter.FixedSpaceIndenter;
 
 import br.cefetrj.sca.dominio.Departamento;
 import br.cefetrj.sca.dominio.Professor;
@@ -82,10 +89,53 @@ public class UsuarioController {
 
 		List<Professor> professores = professorRepo.findProfessores();
 		List<Departamento> departamentos = departamentoRepo.findDepartamentos();
-	    model.addAttribute("departamentos", departamentos);
+		model.addAttribute("departamentos", departamentos);
 		model.addAttribute("professores", professores);
 
-		return "/usuarios/cadastroProfessorDepartamento";
+		return "/usuarios/cadastroProfessor/cadastroProfessorDepartamento";
+	}
+
+	/**
+	 * Esse método adiciona o Professor a um Departamento.
+	 */
+	@RequestMapping(value = { "/", "/setListProfessorDepartamento" }, method = RequestMethod.POST)
+	public String setListProfessorByDepartamento(Model model, HttpServletRequest request, HttpSession session,
+			@RequestParam("matricula") List<String> matriculas,
+			@RequestParam("departamento") List<String> departamentos) {
+
+		for (int i = 0; i < matriculas.size(); i++) {
+			int tracoMat = matriculas.get(i).indexOf("-");
+			tracoMat = tracoMat + 1;
+
+			for (int j = 0; j < departamentos.size(); j++) {
+				int tracoDep = departamentos.get(j).indexOf("-");
+				tracoDep = tracoDep + 1;
+				if (matriculas.get(i).substring(tracoMat).equals(departamentos.get(j).substring(tracoDep))) {
+					Departamento d = departamentoRepo
+							.findDepartamentoBySigla(departamentos.get(j).substring(0, tracoDep - 1));
+					// System.out.println("Substring Departamento : " +
+					// departamentos.get(j).substring(0, tracoDep - 1));
+					// System.out.println("Nome do Departamento: " +
+					// d.getNome());
+					Professor p = professorRepo.findProfessorByMatricula(matriculas.get(i).substring(0, tracoMat - 1));
+					// System.out.println("Substring Professor: " +
+					// matriculas.get(i).substring(0, tracoMat - 1));
+					// System.out.println("Nome Professor: " + p.getNome());
+					
+					d.addProfessor(p);// Verificar erro do add!
+					
+					/* Fazer update no banco!
+					 * 
+					 * Departamento.professores
+					 */
+				}
+
+				tracoDep = 0;
+			}
+			tracoMat = 0;
+		}
+
+		return "/usuarios/cadastroProfessor/sucesso";
 	}
 
 	/**

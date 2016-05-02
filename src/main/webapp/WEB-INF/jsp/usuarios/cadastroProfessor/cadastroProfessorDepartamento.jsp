@@ -24,7 +24,7 @@
 	<div class="generic-container">
 
 		<div class="panel panel-default">
-			<form action="" method="post">
+			<form action="${pageContext.request.contextPath}/usuarios/setListProfessorDepartamento" method="POST">
 				<!-- Default panel contents -->
 				<div class="panel-heading">
 					<span class="lead">Lista de Usuários</span>
@@ -42,24 +42,26 @@
 					<tbody>
 
 						<c:forEach varStatus="i" items="${professores}" var="professor">
-							<input name="matricula${i.index}" value="${professor.matricula}"
+							<input name="matricula" value="${professor.matricula}-${i.index}"
 								type="hidden" />
 							<tr>
 								<td>${professor.pessoa.nome}</td>
 								<td>${professor.matricula}</td>
 								<td>${professor.pessoa.email}</td>
 
-								<td><select name="departamento${i.index}" required>
+								<td><select name="departamento" >
 										<option value="" class="form-control" label="Selecionar..."
 											selected disabled></option>
-										<c:forEach items="${departamentos}" var="departamento">
-											<option value="${departamento.id}">${departamento.sigla}</option>
+										<c:forEach  items="${departamentos}" var="departamento">
+											<option value="${departamento.sigla}-${i.index}">${departamento.sigla}</option>
 										</c:forEach>
 								</select></td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
+				  <button type="submit" class="btn btn-default">Adicionar</button>
+				
 			</form>
 		</div>
 	</div>

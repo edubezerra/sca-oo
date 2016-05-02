@@ -1,9 +1,9 @@
 package br.cefetrj.sca.dominio;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -19,7 +19,7 @@ public class Departamento {
 
 	private String nome;
 
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	private Set<Professor> professores = new HashSet<Professor>();
 
 	@SuppressWarnings("unused")
@@ -51,7 +51,7 @@ public class Departamento {
 		this.professores.add(professor);
 	}
 
-	public Collection<Professor> getProfessores() {
+	public Set<Professor> getProfessores() {
 		return professores;
 	}
 

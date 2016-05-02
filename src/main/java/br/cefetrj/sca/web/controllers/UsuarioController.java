@@ -91,7 +91,7 @@ public class UsuarioController {
 		List<Departamento> departamentos = departamentoRepo.findDepartamentos();
 
 		for (int i = 0; i < professores.size(); i++) {
-			//verifica se o Professor está associado à algum Departamento
+			// verifica se o Professor está associado à algum Departamento
 			if (departamentoRepo.findDepartamentoByProfessor(professores.get(i).getMatricula()) != null) {
 				professores.remove(professores.get(i));
 
@@ -111,24 +111,26 @@ public class UsuarioController {
 			@RequestParam("matricula") List<String> matriculas,
 			@RequestParam("departamento") List<String> departamentos) {
 
-		for (int i = 0; i < matriculas.size(); i++) {
-			int tracoMat = matriculas.get(i).indexOf("-");
-			tracoMat = tracoMat + 1;
+		for (int j = 0; j < departamentos.size(); j++) {
 
-			for (int j = 0; j < departamentos.size(); j++) {
-				int tracoDep = departamentos.get(j).indexOf("-");
-				tracoDep = tracoDep + 1;
+			int tracoDep = departamentos.get(j).indexOf("-");
+
+			tracoDep = tracoDep + 1;
+
+			Departamento d = departamentoRepo
+					.findDepartamentoBySigla(departamentos.get(j).substring(0, tracoDep - 1));
+
+			for (int i = 0; i < matriculas.size(); i++) {
+				int tracoMat = matriculas.get(i).indexOf("-");
+
+				tracoMat = tracoMat + 1;
+				
 				if (matriculas.get(i).substring(tracoMat).equals(departamentos.get(j).substring(tracoDep))) {
-					Departamento d = departamentoRepo
-							.findDepartamentoBySigla(departamentos.get(j).substring(0, tracoDep - 1));
-					// System.out.println("Substring Departamento : " +
-					// departamentos.get(j).substring(0, tracoDep - 1));
-					// System.out.println("Nome do Departamento: " +
-					// d.getNome());
+					System.out.println("Substring Departamento : " + departamentos.get(j).substring(0, tracoDep - 1));
+					System.out.println("Nome do Departamento: " + d.getNome());
 					Professor p = professorRepo.findProfessorByMatricula(matriculas.get(i).substring(0, tracoMat - 1));
-					// System.out.println("Substring Professor: " +
-					// matriculas.get(i).substring(0, tracoMat - 1));
-					// System.out.println("Nome Professor: " + p.getNome());
+					System.out.println("Substring Professor: " + matriculas.get(i).substring(0, tracoMat - 1));
+					System.out.println("Nome Professor: " + p.getNome());
 
 					d.addProfessor(p);// Verificar erro do add!
 
@@ -139,10 +141,12 @@ public class UsuarioController {
 					 */
 				}
 
-				tracoDep = 0;
+				tracoMat = 0;
 			}
-			tracoMat = 0;
+			tracoDep = 0;
+			departamentoRepo.save(d);
 		}
+
 
 		return "/usuarios/cadastroProfessor/sucesso";
 	}

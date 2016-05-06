@@ -101,7 +101,7 @@ public class RequerimentoMatriculaForaPrazoController {
 	 * para visualização apenas.
 	 */
 	@RequestMapping(value = "/visualizarRequerimentos", method = RequestMethod.GET)
-	public String visualizarRequerimentos(HttpServletRequest request, Model model) {
+	public String visualizarRequerimentos(Model model) {
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matriculaAluno = usr.getLogin();
 		this.definirModelParaVisualizacaoRequerimentos(model, matriculaAluno);
@@ -195,14 +195,18 @@ public class RequerimentoMatriculaForaPrazoController {
 	 * requerimento.
 	 */
 	@RequestMapping(value = "/visualizarDetalhesRequerimento", method = RequestMethod.POST)
-	public String visualizarDetalhesRequerimento(@RequestParam int ano, @RequestParam EnumPeriodo periodo,
-			HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String visualizarDetalhesRequerimento(
+			@RequestParam int ano, 
+			@RequestParam EnumPeriodo periodo,
+			Model model) {
 
 		Usuario usr = UsuarioController.getCurrentUser();
 		String matriculaAluno = usr.getLogin();
 
 		try {
-			MatriculaForaPrazo requerimento = service.findMatriculaForaPrazoByAlunoAndPeriodo(matriculaAluno,
+			MatriculaForaPrazo requerimento;
+			requerimento = service.findMatriculaForaPrazoByAlunoAndPeriodo(
+					matriculaAluno,
 					new PeriodoLetivo(ano, periodo));
 
 			model.addAttribute("requerimento", requerimento);
@@ -215,26 +219,31 @@ public class RequerimentoMatriculaForaPrazoController {
 		}
 	}
 
-	@RequestMapping(value = "/downloadFile", method = RequestMethod.POST)
-	public void downloadFile(@RequestParam Long solicitacaoId, HttpServletRequest request, HttpServletResponse response,
-			HttpSession sessao) {
-		Usuario usr = UsuarioController.getCurrentUser();
-		String matriculaAluno = usr.getLogin();
-		try {
-			MatriculaForaPrazo requerimento = service.findMatriculaForaPrazoById(solicitacaoId);
-			Comprovante comprovante = requerimento.getComprovante();
-			GerenteArquivos.downloadFile(matriculaAluno, solicitacaoId, request, response, comprovante);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	// @RequestMapping(value = "/downloadFile", method = RequestMethod.POST)
+	// public void downloadFile(@RequestParam Long solicitacaoId,
+	// HttpServletRequest request, HttpServletResponse response,
+	// HttpSession sessao) {
+	// Usuario usr = UsuarioController.getCurrentUser();
+	// String matriculaAluno = usr.getLogin();
+	// try {
+	// MatriculaForaPrazo requerimento =
+	// service.findMatriculaForaPrazoById(solicitacaoId);
+	// Comprovante comprovante = requerimento.getComprovante();
+	// GerenteArquivos.downloadFile(matriculaAluno, solicitacaoId, request,
+	// response, comprovante);
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
 
-//	@RequestMapping(method = RequestMethod.GET, value = "/getTurmasByDepartamento")
-//	@ResponseBody
-//	public String handleRequest(@RequestParam("idDepartamento") int id) {
-//		List<Turma> turmas = service.findTurmasByPeriodoLetivo(PeriodoLetivo.PERIODO_CORRENTE);
-//		return turmas.toString();
-//	}
+	// @RequestMapping(method = RequestMethod.GET, value =
+	// "/getTurmasByDepartamento")
+	// @ResponseBody
+	// public String handleRequest(@RequestParam("idDepartamento") int id) {
+	// List<Turma> turmas =
+	// service.findTurmasByPeriodoLetivo(PeriodoLetivo.PERIODO_CORRENTE);
+	// return turmas.toString();
+	// }
 
 	// private void validarArquivoComprovanteMatricula(MultipartFile file) {
 	// if (file == null) {

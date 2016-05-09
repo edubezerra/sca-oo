@@ -19,7 +19,7 @@ public class Departamento {
 
 	private String nome;
 
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
 	private Set<Professor> professores = new HashSet<Professor>();
 
 	@SuppressWarnings("unused")

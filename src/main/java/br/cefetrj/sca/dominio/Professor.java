@@ -15,8 +15,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import br.cefetrj.sca.dominio.contas.Email;
 import br.cefetrj.sca.dominio.gradesdisponibilidade.GradeDisponibilidade;
+import br.cefetrj.sca.dominio.repositories.DepartamentoRepositorio;
 
 @Entity
 public class Professor {

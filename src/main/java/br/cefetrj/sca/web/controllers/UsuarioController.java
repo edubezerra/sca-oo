@@ -1,5 +1,6 @@
 package br.cefetrj.sca.web.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -22,9 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter.FixedSpaceIndenter;
 
 import br.cefetrj.sca.dominio.Departamento;
 import br.cefetrj.sca.dominio.Professor;
@@ -89,14 +87,14 @@ public class UsuarioController {
 
 		List<Professor> professores = professorRepo.findProfessores();
 		List<Departamento> departamentos = departamentoRepo.findDepartamentos();
-
+		List<Professor> profDep = new ArrayList<>();
 		for (int i = 0; i < professores.size(); i++) {
-			// verifica se o Professor está associado à algum Departamento
 			if (departamentoRepo.findDepartamentoByProfessor(professores.get(i).getMatricula()) != null) {
-				professores.remove(professores.get(i));
-
+				profDep.add(professores.get(i));
 			}
+
 		}
+		model.addAttribute("profDep", profDep);
 		model.addAttribute("departamentos", departamentos);
 		model.addAttribute("professores", professores);
 
@@ -117,14 +115,13 @@ public class UsuarioController {
 
 			tracoDep = tracoDep + 1;
 
-			Departamento d = departamentoRepo
-					.findDepartamentoBySigla(departamentos.get(j).substring(0, tracoDep - 1));
+			Departamento d = departamentoRepo.findDepartamentoBySigla(departamentos.get(j).substring(0, tracoDep - 1));
 
 			for (int i = 0; i < matriculas.size(); i++) {
 				int tracoMat = matriculas.get(i).indexOf("-");
 
 				tracoMat = tracoMat + 1;
-				
+
 				if (matriculas.get(i).substring(tracoMat).equals(departamentos.get(j).substring(tracoDep))) {
 					System.out.println("Substring Departamento : " + departamentos.get(j).substring(0, tracoDep - 1));
 					System.out.println("Nome do Departamento: " + d.getNome());
@@ -132,13 +129,8 @@ public class UsuarioController {
 					System.out.println("Substring Professor: " + matriculas.get(i).substring(0, tracoMat - 1));
 					System.out.println("Nome Professor: " + p.getNome());
 
-					d.addProfessor(p);// Verificar erro do add!
+					d.addProfessor(p);
 
-					/*
-					 * Fazer update no banco!
-					 * 
-					 * Departamento.professores
-					 */
 				}
 
 				tracoMat = 0;
@@ -146,7 +138,6 @@ public class UsuarioController {
 			tracoDep = 0;
 			departamentoRepo.save(d);
 		}
-
 
 		return "/usuarios/cadastroProfessor/sucesso";
 	}

@@ -24,7 +24,9 @@
 	<div class="generic-container">
 
 		<div class="panel panel-default">
-			<form action="${pageContext.request.contextPath}/usuarios/setListProfessorDepartamento" method="POST">
+			<form
+				action="${pageContext.request.contextPath}/usuarios/setListProfessorDepartamento"
+				method="POST">
 				<!-- Default panel contents -->
 				<div class="panel-heading">
 					<span class="lead">Lista de Usuários</span>
@@ -49,10 +51,20 @@
 								<td>${professor.matricula}</td>
 								<td>${professor.pessoa.email}</td>
 
-								<td><select name="departamento" >
-										<option value="" class="form-control" label="Selecionar..."
-											selected disabled></option>
-										<c:forEach  items="${departamentos}" var="departamento">
+								<td><select name="departamento">
+										<c:forEach items="${profDep}" var="prof">
+											<c:choose>
+												<c:when test="${prof.matricula == professor.matricula}">
+													<option value="" class="form-control" label="Departamento"
+														selected disabled>Departamento</option>
+												</c:when>
+												<c:otherwise>
+													<option value="" class="form-control" label="Selecionar..."
+														selected disabled>Selecionar</option>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
+										<c:forEach items="${departamentos}" var="departamento">
 											<option value="${departamento.sigla}-${i.index}">${departamento.sigla}</option>
 										</c:forEach>
 								</select></td>
@@ -60,8 +72,8 @@
 						</c:forEach>
 					</tbody>
 				</table>
-				  <button type="submit" class="btn btn-default">Adicionar</button>
-				
+				<button type="submit" class="btn btn-default">Adicionar</button>
+
 			</form>
 		</div>
 	</div>

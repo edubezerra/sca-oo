@@ -24,14 +24,13 @@ public class IsencaoDisciplinaService {
 	private DisciplinaRepositorio disciplinaRepo;
 
 	public Aluno findAlunoByMatricula(String matricula) {
-		
-				
+
 		Aluno aluno = alunoRepo.findAlunoByMatricula(matricula);
 		if (aluno != null)
 			return aluno;
 		else
 			System.out.println("IsencaoDisciplinaService - Aluno não encontrado!");
-		return null; 
+		return null;
 	}
 
 	public Professor findProfessorByMatricula(String matricula) {
@@ -42,15 +41,10 @@ public class IsencaoDisciplinaService {
 			System.out.println("IsencaoDisciplinaService - Professor não encontrado!");
 		return null;
 	}
-	/*
-	 * public List<Disciplina> findDisciplinas(String siglaCurso) {
-	 * List<Disciplina> disciplinas = disciplinaRepo.findBySigla(siglaCurso); if
-	 * (disciplinas.isEmpty()) { System.out.println(
-	 * "IsencaoDisciplinaService  Lista de disciplinas está vazia!"); return
-	 * null; } else
-	 * 
-	 * return disciplinas; }
-	 */
+
+	public Disciplina getDisciplinaPorId(Long idDisciplina) {
+		return disciplinaRepo.findDisciplinaById(idDisciplina);
+	}
 
 	public List<Disciplina> findDisciplinas(String siglaCurso) {
 		List<Disciplina> disciplinas = disciplinaRepo.findBySigla(siglaCurso);

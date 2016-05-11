@@ -19,7 +19,7 @@ public class ItemIsencao {
 
 	private String situacao;
 	private Date dataAnalise;
-	
+
 	@ManyToOne
 	Disciplina disciplina;
 	
@@ -56,6 +56,14 @@ public class ItemIsencao {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Comprovante getComprovante() {
+		return comprovante;
+	}
+
+	public void setComprovante(Comprovante comprovante) {
+		this.comprovante = comprovante;
 	}
 
 }

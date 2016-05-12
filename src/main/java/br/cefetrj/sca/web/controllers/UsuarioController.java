@@ -87,25 +87,19 @@ public class UsuarioController {
 
 		List<Professor> professores = professorRepo.findProfessores();
 		List<Departamento> departamentos = departamentoRepo.findDepartamentos();
-		//List<Professor> profDep = new ArrayList<>();
 		List<Departamento> depProf = new ArrayList<>();
-	/*	for (int i = 0; i < professores.size(); i++) {
-			if (departamentoRepo.findDepartamentoByProfessor(professores.get(i).getMatricula()) != null) {
-				profDep.add(professores.get(i));
-			}
-		} */
 		
 		for(int i=0;i<departamentos.size();i++){
 			for(int j=0;j<professores.size();j++){
 				if(departamentos.get(i).getProfessores().contains(professores.get(j).getMatricula())){
 					System.out.println("-->>"+departamentos.get(i).getProfessores().contains(professores.get(j).getMatricula()));
+					System.out.println("prof j: " + professores.get(j).getMatricula());
 					depProf.add(departamentos.get(i));
 					System.out.println("departamentos.get(i)---" + departamentos.get(i).getSigla());
 				}
 			}
 		}
 		
-		//model.addAttribute("profDep", profDep);
 		model.addAttribute("depProf", depProf);
 		model.addAttribute("departamentos", departamentos);
 		model.addAttribute("professores", professores);

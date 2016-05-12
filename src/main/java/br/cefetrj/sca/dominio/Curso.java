@@ -23,7 +23,7 @@ public class Curso {
 	List<Disciplina> disciplinas;
 	
 	@OneToOne
-	Professor professor;
+	Professor coordenador;
 
 	@SuppressWarnings("unused")
 	private Curso() {
@@ -70,5 +70,13 @@ public class Curso {
 	@Override
 	public String toString() {
 		return "Curso [sigla=" + sigla + ", nome=" + nome + "]";
+	}
+
+	public Professor getCoordenador() {
+		return coordenador;
+	}
+
+	public void setCoordenador(Professor coordenador) {
+		this.coordenador = coordenador;
 	}
 }

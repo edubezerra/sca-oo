@@ -17,6 +17,10 @@ public class ItemIsencao {
 	@GeneratedValue
 	private Long id;
 
+	public static String EM_ANALISE;
+	public static String DEFERIDO;
+	public static String INDEFERIDO;
+	
 	private String situacao;
 	private Date dataAnalise;
 

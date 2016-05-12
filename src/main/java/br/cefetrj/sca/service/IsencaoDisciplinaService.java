@@ -6,9 +6,11 @@ import org.springframework.stereotype.Service;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
+import br.cefetrj.sca.dominio.ProcessoIsencao;
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
+import br.cefetrj.sca.dominio.repositories.ProcessoIsencaoRepositorio;
 import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
 
 @Service
@@ -22,6 +24,9 @@ public class IsencaoDisciplinaService {
 
 	@Autowired
 	private DisciplinaRepositorio disciplinaRepo;
+	
+	@Autowired
+	private ProcessoIsencaoRepositorio procIsencaoRepo;
 
 	public Aluno findAlunoByMatricula(String matricula) {
 
@@ -54,4 +59,25 @@ public class IsencaoDisciplinaService {
 		} else
 			return disciplinas;
 	}
+	
+	public List<ProcessoIsencao> findProcessosIsencao() {
+		List<ProcessoIsencao> pi = procIsencaoRepo.findProcessoIsencao();
+		if(pi.isEmpty()){
+			System.out.println("IsencaoDisciplinaService  Lista de processos está vazia!");
+			return null;
+		} else{
+			return pi;
+		}	
+	}
+	
+	public List<Aluno> getTodosOsAlunos() {
+		List<Aluno> a = alunoRepo.getAllAlunos();
+		if(a.isEmpty()){
+			System.out.println("IsencaoDisciplinaService  Lista de processos está vazia!");
+			return null;
+		} else{
+			return a;
+		}	
+	}
+	
 }

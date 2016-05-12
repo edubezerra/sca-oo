@@ -53,16 +53,18 @@
 
 								<td><select name="departamento">
 										<c:forEach items="${profDep}" var="prof">
+											<c:forEach items="${depProf}" var="depProf">
 											<c:choose>
 												<c:when test="${prof.matricula == professor.matricula}">
-													<option value="" class="form-control" label="Departamento"
-														selected disabled>Departamento</option>
+													<option value="" class="form-control" label="${depProf.sigla}"
+														selected disabled>${depProf.sigla}</option>
 												</c:when>
 												<c:otherwise>
 													<option value="" class="form-control" label="Selecionar..."
 														selected disabled>Selecionar</option>
 												</c:otherwise>
 											</c:choose>
+											</c:forEach>
 										</c:forEach>
 										<c:forEach items="${departamentos}" var="departamento">
 											<option value="${departamento.sigla}-${i.index}">${departamento.sigla}</option>

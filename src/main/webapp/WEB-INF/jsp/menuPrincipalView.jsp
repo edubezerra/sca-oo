@@ -83,6 +83,9 @@
 				<li><a
 					href="${pageContext.request.contextPath}/matriculaForaPrazo/analise/homeInclusao/">
 						Análise de Matrículas Fora do Prazo</a></li>
+				<li><a
+					href="${pageContext.request.contextPath}/isencaoDisciplina/professorView">
+						Isenção de Disciplina </a></li>
 			</ul>
 		</sec:authorize>
 

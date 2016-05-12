@@ -1,6 +1,9 @@
 package br.cefetrj.sca.web.controllers;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +23,7 @@ import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
 import br.cefetrj.sca.dominio.ItemIsencao;
 import br.cefetrj.sca.dominio.ProcessoIsencao;
+import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
 import br.cefetrj.sca.dominio.repositories.ItemIsencaoRepositorio;
 import br.cefetrj.sca.dominio.repositories.ProcessoIsencaoRepositorio;
@@ -32,10 +36,10 @@ public class IsencaoDisciplinaController {
 
 	@Autowired
 	IsencaoDisciplinaService is;
-	
+
 	@Autowired
 	ItemIsencaoRepositorio itemIsencaoRepo;
-	
+
 	@Autowired
 	ProcessoIsencaoRepositorio processoIsencaoRepo;
 
@@ -69,60 +73,71 @@ public class IsencaoDisciplinaController {
 		try {
 			String matricula = (String) session.getAttribute("login");
 			Aluno aluno = is.findAlunoByMatricula(matricula);
-			
-			//validarArquivoComprovanteIsencao(file);
-			
+
+			// validarArquivoComprovanteIsencao(file);
+
 			String auxcheckboxes[] = request.getParameterValues("choice");
 			Long checkBoxes[] = new Long[auxcheckboxes.length];
 			// convertendo o array de checkBoxes para Long
 			for (int i = 0; i < auxcheckboxes.length; i++) {
 				checkBoxes[i] = Long.parseLong(auxcheckboxes[i]);
 			}
-			
-			//instanciando o processo isencao
+
+			// instanciando o processo isencao
 			ProcessoIsencao pi = null;
 			ItemIsencao itemIsencao = null;
-			
+
 			if (aluno.getProcessoIsencao() != null) {
 				System.out.println("ja existe processo isencao o aluno e ta atualizando o processo isencao dele");
-				//se ele tiver o processo de isencao, vai salvar o processo que já esta existente
+				// se ele tiver o processo de isencao, vai salvar o processo que
+				// já esta existente
 				pi = aluno.getProcessoIsencao();
 				for (int i = 0; i < checkBoxes.length; i++) {
 					itemIsencao = new ItemIsencao();
-					
+
 					itemIsencao.setDisciplina(is.getDisciplinaPorId(checkBoxes[i]));
-					//salvar itemIsencao?
+					// salvar itemIsencao?
+					itemIsencao.setSituacao(itemIsencao.EM_ANALISE);
 					aluno.getProcessoIsencao().getListaItenIsencao().add(itemIsencao);
-					//salvar processoIsencao?
-					
+					// salvar processoIsencao?
+
 					itemIsencaoRepo.save(itemIsencao);
-					System.out.println(itemIsencao.getId()+ "------------" + itemIsencao.getDisciplina());
+					System.out.println(itemIsencao.getId() + "------------" + itemIsencao.getDisciplina());
+					
+					System.out.println(itemIsencao.getSituacao() + "------------" );
 
 				}
 				processoIsencaoRepo.save(pi);
 				System.out.println("->>>> " + aluno.getProcessoIsencao().getId());
-				
+				System.out.println("->>>> " + aluno.getProcessoIsencao().getDataRegistro());
+
 			} else {
 				List<ItemIsencao> listaIsen = new ArrayList<>();
-				
+
 				pi = new ProcessoIsencao();
-				
-				//Comprovante comprovante = new Comprovante(file.getContentType(), file.getBytes(),
-	   					// file.getOriginalFilename());
-	   			 //validarArquivoComprovanteIsencao(file);
-				
-				for(int i =0;i<checkBoxes.length;i++){
+
+				// Comprovante comprovante = new Comprovante(file.getContentType(), file.getBytes(),
+				// file.getOriginalFilename());
+				// validarArquivoComprovanteIsencao(file);
+
+				for (int i = 0; i < checkBoxes.length; i++) {
 					itemIsencao = new ItemIsencao();
-	
+
 					itemIsencao.setDisciplina(is.getDisciplinaPorId(checkBoxes[i]));
-	   				listaIsen.add(itemIsencao);
-	   				
-	   				//itemIsencao.setComprovante(comprovante); 
-					
+					listaIsen.add(itemIsencao);
+
+					// itemIsencao.setComprovante(comprovante);
+
 					itemIsencaoRepo.save(itemIsencao);
-					
-				}
+
+				}			
 				pi.setListaItenIsencao(listaIsen);
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				Date data = new Date();				
+				Date dataAtual = sdf.parse(sdf.format(data));
+				
+				pi.setDataRegistro(dataAtual);
 				aluno.setProcessoIsencao(pi);
 
 				processoIsencaoRepo.save(pi);
@@ -148,6 +163,73 @@ public class IsencaoDisciplinaController {
 		String[] tiposAceitos = { "application/pdf", "image/jpeg", "image/png" };
 		if (ArrayUtils.indexOf(tiposAceitos, file.getContentType()) < 0) {
 			throw new IllegalArgumentException("O arquivo de comprovante deve ser no formato PDF, JPEG ou PNG");
+		}
+	}
+
+	////////////////////////////////////// PROFESSOR ///////////////////////////////////// ////////////////////////////
+
+	@RequestMapping(value = "/professorView", method = RequestMethod.GET)
+	public String isencaoDisciplinaProfessor(Model model, HttpServletRequest request, HttpSession session) {
+
+		String matricula = UsuarioController.getCurrentUser().getLogin();
+		session.setAttribute("login", matricula);
+		try {
+
+			Professor professor = is.findProfessorByMatricula(matricula);
+
+			// List<ProcessoIsencao> pi = is.findProcessosIsencao();
+			List<Aluno> alunos = is.getTodosOsAlunos();
+			List<Aluno> alunosProcessoIsencao = new ArrayList<>();
+
+			for (int i = 0; i < alunos.size(); i++) {
+				if (alunos.get(i).getProcessoIsencao() != null) {
+					alunosProcessoIsencao.add(alunos.get(i));
+				}
+			}
+
+			model.addAttribute("professor", professor);
+			model.addAttribute("alunosProcessoIsencao", alunosProcessoIsencao);
+
+			return "/isencaoDisciplina/professor/professorView";
+
+		} catch (Exception exc) {
+			model.addAttribute("error", exc.getMessage());
+			return "/homeView";
+		}
+	}
+
+	@RequestMapping(value = { "/", "/itemProcessoIsencaoView" }, method = RequestMethod.POST)
+	public String itensProcessoIsencaoProfessor(Model model, HttpServletRequest request, HttpSession session,
+			@RequestParam("matricula") List<String> matriculas) {
+
+		String matricula = UsuarioController.getCurrentUser().getLogin();
+		session.setAttribute("login", matricula);
+
+		try {
+			Professor professor = is.findProfessorByMatricula(matricula);
+
+			List<Aluno> alunoIsencao = is.getTodosOsAlunos();
+			List<ItemIsencao> alunosItemIsencao = new ArrayList<>();
+
+			for (int j = 0; j < matriculas.size(); j++) {
+				System.out.println("----> " + matriculas.get(j));
+
+				for (int i = 0; i < alunoIsencao.size(); i++) {
+					//System.out.println("Segundo for:: "+alunoIsencao.get(i).getMatricula());
+					if (alunoIsencao.get(i).getMatricula().equals(matriculas.get(j))) {
+						alunosItemIsencao.addAll(alunoIsencao.get(i).getProcessoIsencao().getListaItenIsencao());
+					}
+				}
+			}
+
+			model.addAttribute("professor", professor);
+			model.addAttribute("alunosItemIsencao", alunosItemIsencao);
+
+			return "/isencaoDisciplina/professor/itemProcessoIsencaoView";
+
+		} catch (Exception exc) {
+			model.addAttribute("error", exc.getMessage());
+			return "/homeView";
 		}
 	}
 }

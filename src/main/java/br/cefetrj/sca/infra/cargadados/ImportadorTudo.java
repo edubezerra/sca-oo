@@ -30,6 +30,7 @@ public class ImportadorTudo {
 
 	public void run() {
 		try {
+			
 			new ImportadorQuestionarioAvaliacaoTurmas().run();
 			new ImportadorCursos().run();
 			new ImportadorDisciplinas().run();
@@ -38,7 +39,7 @@ public class ImportadorTudo {
 			new ImportadorDocentes().run();
 			new ImportadorDepartamentos().run();
 
-//			new ImportadorHistoricosEscolares().run();
+			new ImportadorHistoricosEscolares().run();
 			
 			new ImportadorTurmasComInscricoes().run();
 			new ImportadorAlocacoesProfessoresEmTurmas().run();

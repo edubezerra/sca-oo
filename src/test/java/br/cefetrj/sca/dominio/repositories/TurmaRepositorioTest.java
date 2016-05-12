@@ -158,6 +158,14 @@ public class TurmaRepositorioTest {
 
 		assertNotNull(turma.getId());
 	}
+	
+	@Test
+	public void testObterTurmas() {
+		String codigoTurma = "900001";
+		List<Turma> turmas = turmaRepositorio.findTurmasByCodigo(codigoTurma);
+		
+		System.out.println(turmas.size());
+	}
 
 	@Test
 	public void testFindTurmasLecionadasPorProfessorEmPeriodo() {

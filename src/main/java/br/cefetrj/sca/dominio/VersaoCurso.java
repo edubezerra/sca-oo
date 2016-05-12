@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 import br.cefetrj.sca.dominio.atividadecomplementar.AtividadeComplementar;
 import br.cefetrj.sca.dominio.atividadecomplementar.TabelaAtividadesComplementares;
@@ -36,6 +37,14 @@ public final class VersaoCurso {
 
 	@OneToMany(mappedBy = "versaoCurso", fetch = FetchType.EAGER)
 	List<Disciplina> disciplinas;
+	
+	/**
+	 * Inteiro contendo a quantidade de períodos mínimos para um curso.
+	 */
+	private Integer qtdPeriodoMinimo;
+	
+	@Transient
+	private Integer periodoMaximo;
 
 	/**
 	 * Carga horária mínima de disciplinas optativas.
@@ -155,6 +164,22 @@ public final class VersaoCurso {
 		this.curso = curso;
 	}
 
+	public void setQtdPeriodoMinimo(Integer qtdPeriodoMinimo) {
+		if(qtdPeriodoMinimo == null || qtdPeriodoMinimo < 0)
+			throw new IllegalArgumentException("Valor invalido para o período mínimo para o término de um curso.");
+		
+		this.qtdPeriodoMinimo = qtdPeriodoMinimo;
+		this.periodoMaximo = (2 * qtdPeriodoMinimo) - 1;
+	}
+
+	public Integer getPeriodoMinimo(){
+		return qtdPeriodoMinimo;
+	}
+	
+	public Integer getPeriodoMaximo() {
+		return periodoMaximo;
+	}
+	
 	@Override
 	public String toString() {
 		return "VersaoCurso [numero=" + numero + "]";

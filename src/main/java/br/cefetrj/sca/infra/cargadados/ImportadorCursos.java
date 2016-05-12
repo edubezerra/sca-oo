@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import jxl.Sheet;
 import jxl.Workbook;
@@ -21,7 +22,9 @@ public class ImportadorCursos {
 	static String colunas[] = { "ID_DISCIPLINA", "COD_DISCIPLINA", "NOME_DISCIPLINA", "CH_TEORICA", "CH_PRATICA",
 			"CH_TOTAL", "CREDITOS", "ENCARGO_DIDATICO", "IND_HORARIO", "SITUACAO", "COD_ESTRUTURADO", "NOME_UNIDADE",
 			"SIGLA_UNIDADE", "COD_CURSO", "NUM_VERSAO", "ID_VERSAO_CURSO", "IND_SIM_NAO" };
-
+	
+	static String colunasPeriodoMinimo[] = {"COD_CURSO", "CURSO", "PERIODO_MINIMO", "NUM_VERSAO"};
+	
 	/**
 	 * Dicionário de pares (sigla, objeto da classe VersaoCurso) de cada
 	 * curso.
@@ -42,6 +45,9 @@ public class ImportadorCursos {
 		String planilhaBCC = "./planilhas/grades-curriculares/DisciplinasBCC.xls";
 		ImportadorCursos.run(planilhaCSTSI);
 		ImportadorCursos.run(planilhaBCC);
+		
+		String planilhaInfoPeriodoMinimo = "./planilhas/curso-periodo-minimo/curso_periodo_minimo.xls";
+		ImportadorCursos.mergeInfoPeriodo(planilhaInfoPeriodoMinimo);
 	}
 
 	public static void run(String arquivoPlanilha) {
@@ -56,7 +62,7 @@ public class ImportadorCursos {
 		}
 		System.out.println("Feito!");
 	}
-
+	
 	public void gravarDadosImportados() {
 
 		EntityManager em = ImportadorTudo.entityManager;
@@ -119,5 +125,61 @@ public class ImportadorCursos {
 				versoesCursos.put(siglaCurso + numVersao, versao);
 			}
 		}
+	}
+	
+	public static void mergeInfoPeriodo(String arquivoPlanilha) {
+		System.out.println("ImportadorCursos.mergeInfoPeriodo()");
+		
+		try {
+		    
+			EntityManager em = ImportadorTudo.entityManager;
+
+			em.getTransaction().begin();
+			
+			File inputWorkbook = new File(arquivoPlanilha);
+			
+			Workbook w;
+
+			List<String> colunasList = Arrays.asList(colunasPeriodoMinimo);
+
+			WorkbookSettings ws = new WorkbookSettings();
+			ws.setEncoding("Cp1252");
+			w = Workbook.getWorkbook(inputWorkbook, ws);
+			Sheet sheet = w.getSheet(0);
+
+			for (int i = 1; i < sheet.getRows(); i++) {
+				String siglaCurso = sheet.getCell(colunasList.indexOf("COD_CURSO"), i).getContents();
+				Integer qtdPeriodoMinimo = Integer.parseInt(sheet.getCell(colunasList.indexOf("PERIODO_MINIMO"), i).getContents());
+				String numeroVersao =sheet.getCell(colunasList.indexOf("NUM_VERSAO"), i).getContents();
+				
+				VersaoCurso versaoCurso = getVersaoCurso(siglaCurso, numeroVersao);
+				
+				if(versaoCurso != null) {
+					versaoCurso.setQtdPeriodoMinimo(qtdPeriodoMinimo);
+					
+					em.merge(versaoCurso);
+				}
+			}
+			
+			em.getTransaction().commit();
+			
+		} catch(BiffException | IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		
+		System.out.println("Feito!");
+	}
+	
+	private static VersaoCurso getVersaoCurso(String siglaCurso, String numeroVersao) {
+
+		EntityManager em = ImportadorTudo.entityManager;
+		
+		Query query = em
+				.createQuery("from VersaoCurso versao "
+						+ "where versao.numero = :numeroVersao and versao.curso.sigla = :siglaCurso");
+		query.setParameter("numeroVersao", numeroVersao);
+		query.setParameter("siglaCurso", siglaCurso);
+		return (VersaoCurso) query.getSingleResult();
 	}
 }

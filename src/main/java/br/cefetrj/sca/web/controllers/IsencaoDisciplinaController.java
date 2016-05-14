@@ -97,7 +97,6 @@ public class IsencaoDisciplinaController {
 
 					itemIsencao.setDisciplina(is.getDisciplinaPorId(checkBoxes[i]));
 					// salvar itemIsencao?
-					itemIsencao.setSituacao(itemIsencao.EM_ANALISE);
 					aluno.getProcessoIsencao().getListaItenIsencao().add(itemIsencao);
 					// salvar processoIsencao?
 
@@ -115,9 +114,11 @@ public class IsencaoDisciplinaController {
 				List<ItemIsencao> listaIsen = new ArrayList<>();
 
 				pi = new ProcessoIsencao();
+				
+				System.out.println("comprovante---------");
 
-				// Comprovante comprovante = new Comprovante(file.getContentType(), file.getBytes(),
-				// file.getOriginalFilename());
+				 //Comprovante comprovante = new Comprovante(file.getContentType(), file.getBytes(),
+				 //file.getOriginalFilename());
 				// validarArquivoComprovanteIsencao(file);
 
 				for (int i = 0; i < checkBoxes.length; i++) {
@@ -126,7 +127,9 @@ public class IsencaoDisciplinaController {
 					itemIsencao.setDisciplina(is.getDisciplinaPorId(checkBoxes[i]));
 					listaIsen.add(itemIsencao);
 
-					// itemIsencao.setComprovante(comprovante);
+					//itemIsencao.setComprovante(comprovante);
+					//itemIsencao.setComprovante(file.getContentType(), file.getBytes(),
+							// file.getOriginalFilename());
 
 					itemIsencaoRepo.save(itemIsencao);
 
@@ -207,6 +210,7 @@ public class IsencaoDisciplinaController {
 
 		try {
 			Professor professor = is.findProfessorByMatricula(matricula);
+			Aluno aluno =null;
 
 			List<Aluno> alunoIsencao = is.getTodosOsAlunos();
 			List<ItemIsencao> alunosItemIsencao = new ArrayList<>();
@@ -218,11 +222,13 @@ public class IsencaoDisciplinaController {
 					//System.out.println("Segundo for:: "+alunoIsencao.get(i).getMatricula());
 					if (alunoIsencao.get(i).getMatricula().equals(matriculas.get(j))) {
 						alunosItemIsencao.addAll(alunoIsencao.get(i).getProcessoIsencao().getListaItenIsencao());
+						aluno = is.findAlunoByMatricula(alunoIsencao.get(i).getMatricula());
 					}
 				}
 			}
 
 			model.addAttribute("professor", professor);
+			model.addAttribute("aluno", aluno);
 			model.addAttribute("alunosItemIsencao", alunosItemIsencao);
 
 			return "/isencaoDisciplina/professor/itemProcessoIsencaoView";
@@ -232,4 +238,47 @@ public class IsencaoDisciplinaController {
 			return "/homeView";
 		}
 	}
+	
+	@RequestMapping(value = { "/", "/professorSucesso" }, method = RequestMethod.POST)
+	public String confirmacaoProcessoIsencao(Model model, HttpServletRequest request, HttpSession session,
+			@RequestParam("radio") List<String> radio,
+			@RequestParam("alunosItemIsencao") List<String> item,
+			@RequestParam("aluno") String matriculaAluno) {
+		
+		System.out.println("sop matricula: " + matriculaAluno);
+		
+		Aluno aluno = is.findAlunoByMatricula(matriculaAluno);
+		
+	/*	for (int i = 0; i < item.size(); i++) {
+			System.out.println("itens: " + item.get(i));
+		}
+		for (int j = 0; j < radio.size(); j++) {
+			System.out.println("radio : " + radio.get(j));
+		} */
+
+		for (int i = 0; i < item.size(); i++) {
+			String itemTraco = item.get(i).substring(8, 9);
+			System.out.println("itens: "+item.get(i) +" itemtraco " + itemTraco);
+			for (int j = 0; j < radio.size(); j++) {
+				//String radioTraco = radio.get(j).substring(10, 11);
+				String radioTraco = null;
+				
+				if(radio.get(j).length() == 11){
+					radioTraco = radio.get(j).substring(10, 11);
+				} else {
+					radioTraco = radio.get(j).substring(8, 9);
+				}
+				
+				if(radioTraco.equals(itemTraco)){
+					System.out.println("ENTROUUU");
+						System.out.println("inffffff");
+						String valorSalvo = radio.get(j).substring(0, radio.get(j).indexOf("-"));					
+						aluno.getProcessoIsencao().getListaItenIsencao().get(i).setSituacao(valorSalvo);
+												
+						itemIsencaoRepo.save(aluno.getProcessoIsencao().getListaItenIsencao().get(i));
+				}
+			}
+		}
+			return "/isencaoDisciplina/professor/professorSucesso";
+	}	
 }

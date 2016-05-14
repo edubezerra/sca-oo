@@ -19,7 +19,7 @@ public class Comprovante {
 	
 	private String nome;
 	
-	public static byte TAMANHO_MAXIMO_COMPROVANTE = (byte) 100000;
+	public static long TAMANHO_MAXIMO_COMPROVANTE =  10000000;
 	
 	@Lob
 	@Basic(fetch = FetchType.LAZY)

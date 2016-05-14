@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import br.cefetrj.sca.dominio.Departamento;
 import br.cefetrj.sca.dominio.ItemIsencao;
 
 public interface ItemIsencaoRepositorio extends JpaRepository<ItemIsencao, Serializable> {
 	
 	ItemIsencao findItemIsencaoById(Long id);
-
 }

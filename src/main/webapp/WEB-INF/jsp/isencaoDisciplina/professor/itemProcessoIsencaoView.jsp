@@ -15,57 +15,65 @@
 <title>Isenção de Disciplina</title>
 </head>
 <body>
-	<h4 align="center">
+	<!-- <h4 align="left">
 		<b> Professor: ${professor.nome }</b> <br></br> <b> Matrícula:
 			${professor.matricula }</b>
-	</h4>
-	<br></br>
+	</h4>  
+	<br></br> -->
+	<h3 align="left">
+	Aluno: ${aluno.nome }
+	
+	<br>
+	Matrícula: ${aluno.matricula }
+	
+	</h3>
+	<br>
 	<h3 align="center">Pedidos de Isenção de Disciplina</h3>
 	<br></br>
 
-
-	<div class="table-responsive" align="center">
-		<table class="table">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Código</th>
-					<th>Disciplina</th>
-					<th>Situacao</th>
-
-				</tr>
-			</thead>
-
-			<tbody>
-
-				<c:forEach items="${alunosItemIsencao}" var="alunosItemIsencao">
-					
+	<form action="${pageContext.request.contextPath}/isencaoDisciplina/professorSucesso"
+		  method="POST">
+		  <input name="aluno" value="${aluno.matricula}" type="hidden" />
+		<div class="table-responsive" align="center">
+			<table class="table">
+				<thead>
 					<tr>
-						<td>${alunosItemIsencao.id}</td>
-						<td>${alunosItemIsencao.disciplina.codigo}</td>
-						<td>${alunosItemIsencao.disciplina.nome}</td>
-						<td>
-						<div>
-						<form action="">
-						<label class="radio-inline"><input type="radio"
-								name="optradio" value="${alunosItemIsencao.situacao}">DEFERIR
-						</label> 
-						<label class="radio-inline"><input type="radio"
-								name="optradio" value="${alunosItemIsencao.situacao}">INDEFERIR
-						</label>
-						</form>
-						</div>
-						</td>
+						<th>ID</th>
+						<th>Código</th>
+						<th>Disciplina</th>
+						<th>Situacao</th>
+
 					</tr>
-				</c:forEach>
-			</tbody>
+				</thead>
+				<tbody>
+					<c:forEach varStatus="i" items="${alunosItemIsencao}" var="alunosItemIsencao" >
+					<input name="alunosItemIsencao" value="${alunosItemIsencao.disciplina.codigo}-${i.index}"
+								type="hidden" />
+						<tr>
+							<td>${alunosItemIsencao.id}</td>
+							<td>${alunosItemIsencao.disciplina.codigo}</td>
+							<td>${alunosItemIsencao.disciplina.nome}</td>
+							<td>
 
-		</table>
-	</div>
-	
-	<a href="${pageContext.request.contextPath}/avaliacaoTurma/menuPrincipal">
-			<input class="btn btn-default" type="button" value="Voltar" />
-		</a>
+							<select name="radio" class="form-control ">
+										<option value="" label="Selecionar..."
+													selected disabled>Selecionar</option>
+										<option value="deferir-${i.index}" >DEFERIR</option>
+										<option value="indeferir-${i.index}" >INDEFERIR</option>
+							</select>
+							</td>
+						</tr>
+					</c:forEach>
+				</tbody>
 
+			</table>
+			<button class="btn btn-success custom-width" type="submit"
+				name="matricula">Confirmar</button>
+		</div>
+	</form>
+	<a
+		href="${pageContext.request.contextPath}/avaliacaoTurma/menuPrincipal">
+		<input class="btn btn-default" type="button" value="Voltar" />
+	</a>
 </body>
 </html>

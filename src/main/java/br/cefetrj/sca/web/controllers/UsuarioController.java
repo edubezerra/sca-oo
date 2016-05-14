@@ -89,16 +89,43 @@ public class UsuarioController {
 		List<Departamento> departamentos = departamentoRepo.findDepartamentos();
 		List<Departamento> depProf = new ArrayList<>();
 		
+	/*	for(int i=0; i< professores.size();i++){
+			Departamento d = departamentoRepo.findDepartamentoByProfessor(professores.get(i).getMatricula());			
+			System.out.println(departamentoRepo.findDepartamentoByProfessor(professores.get(i).getMatricula()));
+			
+			depProf.add(d);
+
+		} */ 
+		List<Professor> t = new ArrayList<>();
+		
 		for(int i=0;i<departamentos.size();i++){
+			t.addAll(departamentos.get(i).getProfessores());
+			
+			for(int j=0;j<t.size();j++){
+				for(int z=0;z<professores.size();z++){
+					if(t.get(j).getMatricula().equals(professores.get(z).getMatricula())){
+					System.out.println("faz a verificacao");
+					Departamento d = departamentoRepo.findDepartamentoByProfessor(professores.get(j).getMatricula());
+					if(d != null){
+						depProf.add(d);						
+						}
+					}
+				}
+			}			
+		}
+		
+	/*	for(int i=0;i<departamentos.size();i++){
 			for(int j=0;j<professores.size();j++){
+				System.out.println("ENTROU NOS DOIS FOR");
 				if(departamentos.get(i).getProfessores().contains(professores.get(j).getMatricula())){
 					System.out.println("-->>"+departamentos.get(i).getProfessores().contains(professores.get(j).getMatricula()));
 					System.out.println("prof j: " + professores.get(j).getMatricula());
-					depProf.add(departamentos.get(i));
+					Departamento d = departamentoRepo.findDepartamentoByProfessor(professores.get(j).getMatricula());
+					//depProf.add(d);
 					System.out.println("departamentos.get(i)---" + departamentos.get(i).getSigla());
 				}
 			}
-		}
+		} */
 		
 		model.addAttribute("depProf", depProf);
 		model.addAttribute("departamentos", departamentos);

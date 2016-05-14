@@ -66,8 +66,8 @@ public class ItemIsencao {
 		return comprovante;
 	}
 
-	public void setComprovante(Comprovante comprovante) {
-		this.comprovante = comprovante;
+	public void setComprovante(String contentType, byte[] data, String nome) {
+		this.comprovante = new Comprovante(contentType, data, nome);
 	}
 
 }

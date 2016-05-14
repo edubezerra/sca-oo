@@ -21,7 +21,7 @@
 	<br></br>
 	<br></br>
 
-	<div class="table-responsive">
+	<div class="table-responsive" align="center">
 		<form action="${pageContext.request.contextPath}/isencaoDisciplina/validaComprovante"  enctype="multipart/form-data" method="POST">
 		 <label for="inputFile">Anexar comprovante de solicitação
 								de matrícula do período atual (Formatos aceitos: PDF, JPEG ou
@@ -53,11 +53,12 @@
 			
 		</table>
 		
-	       <input class="lastfield" type="submit" value="Confirmar" /></form>
-          
-          <a class="button_embedded"
-		href="${pageContext.request.contextPath}/avaliacaoTurma/menuPrincipal"> <input
-		type="button" value="Voltar" /></a>
+	     <button class="btn btn-success custom-width" type="submit"
+				name="matricula">Confirmar</button></form>
 	</div>
+		<a
+		href="${pageContext.request.contextPath}/avaliacaoTurma/menuPrincipal">
+		<input class="btn btn-default" type="button" value="Voltar" />
+	</a>
 </body>
 </html>

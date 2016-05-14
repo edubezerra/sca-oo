@@ -23,12 +23,12 @@
 <body>
 	<div class="generic-container">
 
-		<div class="panel panel-default">
-			<form
+		<div class="panel panel-default" align="center">
+			<form 
 				action="${pageContext.request.contextPath}/usuarios/setListProfessorDepartamento"
 				method="POST">
 				<!-- Default panel contents -->
-				<div class="panel-heading">
+				<div class="panel-heading" >
 					<span class="lead">Lista de Usuários</span>
 				</div>
 				<table class="table table-hover">
@@ -52,6 +52,21 @@
 								<td>${professor.pessoa.email}</td>
 
 								<td><select name="departamento">
+
+										<!-- 
+							<c:forEach items="${depProf}" var="depProf">										
+										<c:choose>
+											<c:when test="${depProf == null} ">
+												<option value="" label="Selecionar..." selected disabled>Selecionar</option>
+											</c:when>
+											<c:otherwise>
+												<option value="" selected disabled>${depProf.sigla}</option>
+											</c:otherwise>
+										</c:choose>
+										</c:forEach>
+							
+							
+							 -->
 										<option value="" class="form-control" label="Selecionar..."
 													selected disabled>Selecionar</option>
 										<c:forEach items="${departamentos}" var="departamento">
@@ -62,10 +77,14 @@
 						</c:forEach>
 					</tbody>
 				</table>
-				<button type="submit" class="btn btn-default">Adicionar</button>
+				<button type="submit" class="btn btn-success" >Adicionar</button>
 
 			</form>
 		</div>
+		<a
+			href="${pageContext.request.contextPath}/avaliacaoTurma/menuPrincipal">
+			<input class="btn btn-default" type="button" value="Voltar" />
+		</a>
 	</div>
 </body>
 </html>

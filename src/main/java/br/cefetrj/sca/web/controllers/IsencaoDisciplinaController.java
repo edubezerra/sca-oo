@@ -43,6 +43,34 @@ public class IsencaoDisciplinaController {
 	@Autowired
 	ProcessoIsencaoRepositorio processoIsencaoRepo;
 
+	
+	
+	@RequestMapping(value = "/visualizarProcessoIsencao", method = RequestMethod.GET)
+	public String visualizarProcessoIsencao(Model model, HttpServletRequest request, HttpSession session) {
+
+		String matricula = UsuarioController.getCurrentUser().getLogin();
+		session.setAttribute("login", matricula);
+		try {
+
+			Aluno aluno = is.findAlunoByMatricula(matricula);
+			List<ItemIsencao> it = new ArrayList<>();
+			
+			if(aluno.getProcessoIsencao() != null){
+				for(int i=0;i<aluno.getProcessoIsencao().getListaItenIsencao().size();i++){
+					it.add(aluno.getProcessoIsencao().getListaItenIsencao().get(i));
+				}
+				model.addAttribute("itemIsencaoByProcessoIsencao", it);
+			}
+			model.addAttribute("aluno", aluno);
+		
+			return "/isencaoDisciplina/aluno/alunoSucesso";
+		} catch (Exception exc) {
+			model.addAttribute("error", exc.getMessage());
+			return "/homeView";
+		}
+	}	
+	
+	
 	@RequestMapping(value = "/alunoView", method = RequestMethod.GET)
 	public String isencaoDisciplina(Model model, HttpServletRequest request, HttpSession session) {
 
@@ -92,6 +120,10 @@ public class IsencaoDisciplinaController {
 				// se ele tiver o processo de isencao, vai salvar o processo que
 				// já esta existente
 				pi = aluno.getProcessoIsencao();
+				for(int i=0;i<aluno.getProcessoIsencao().getListaItenIsencao().size();i++){				
+					aluno.getProcessoIsencao().getListaItenIsencao().removeAll(aluno.getProcessoIsencao().getListaItenIsencao());
+					System.out.println("removendo os itens");
+				}
 				for (int i = 0; i < checkBoxes.length; i++) {
 					itemIsencao = new ItemIsencao();
 
@@ -104,11 +136,13 @@ public class IsencaoDisciplinaController {
 					System.out.println(itemIsencao.getId() + "------------" + itemIsencao.getDisciplina());
 					
 					System.out.println(itemIsencao.getSituacao() + "------------" );
-
 				}
+								
 				processoIsencaoRepo.save(pi);
 				System.out.println("->>>> " + aluno.getProcessoIsencao().getId());
-				System.out.println("->>>> " + aluno.getProcessoIsencao().getDataRegistro());
+				System.out.println("->>>> " + aluno.getProcessoIsencao().getDataRegistro());		
+				
+				System.out.println("Setou os detalhes do item");
 
 			} else {
 				List<ItemIsencao> listaIsen = new ArrayList<>();
@@ -142,12 +176,16 @@ public class IsencaoDisciplinaController {
 				
 				pi.setDataRegistro(dataAtual);
 				aluno.setProcessoIsencao(pi);
-
+				
 				processoIsencaoRepo.save(pi);
-				System.out.println("salvando processo isencao");
+				System.out.println("salvando processo isencao");			
+				System.out.println("Setou os detalhes do item");
 			}
-
-			return "/isencaoDisciplina/aluno/alunoSucesso";
+			
+			model.addAttribute("itemIsencaoByProcessoIsencao", aluno.getProcessoIsencao().getListaItenIsencao());
+			
+			//return "/isencaoDisciplina/aluno/alunoSucesso";
+			return "/menuPrincipalView";
 		} catch (Exception exc) {
 
 			model.addAttribute("error", exc.getMessage());

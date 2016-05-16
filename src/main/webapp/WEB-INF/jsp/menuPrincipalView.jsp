@@ -61,7 +61,7 @@
 					href="${pageContext.request.contextPath}/avaliacaoEgresso/escolherAvaliacao">
 						Avaliação de Curso por Egresso</a></li>
 				<li><a
-					href="${pageContext.request.contextPath}/isencaoDisciplina/alunoView">
+					href="${pageContext.request.contextPath}/isencaoDisciplina/visualizarProcessoIsencao">
 						Isenção de Disciplina </a></li>
 			</ul>
 		</sec:authorize>

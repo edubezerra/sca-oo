@@ -29,7 +29,7 @@
 				method="POST">
 				<!-- Default panel contents -->
 				<div class="panel-heading" >
-					<span class="lead">Lista de Usuários</span>
+					<h3>Lista de Professores</h3>
 				</div>
 				<table class="table table-hover">
 					<thead>
@@ -81,9 +81,9 @@
 
 			</form>
 		</div>
-		<a
-			href="${pageContext.request.contextPath}/avaliacaoTurma/menuPrincipal">
-			<input class="btn btn-default" type="button" value="Voltar" />
+		<a class="btn btn-default"
+			href="${pageContext.request.contextPath}/menuPrincipalView"> <i
+			class="fa fa-arrow-left"> </i> Voltar
 		</a>
 	</div>
 </body>

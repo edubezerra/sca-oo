@@ -56,9 +56,9 @@
 	     <button class="btn btn-success custom-width" type="submit"
 				name="matricula">Confirmar</button></form>
 	</div>
-		<a
-		href="${pageContext.request.contextPath}/avaliacaoTurma/menuPrincipal">
-		<input class="btn btn-default" type="button" value="Voltar" />
-	</a>
+<a class="btn btn-default"
+			href="${pageContext.request.contextPath}/menuPrincipalView"> <i
+			class="fa fa-arrow-left"> </i> Voltar
+		</a>
 </body>
 </html>

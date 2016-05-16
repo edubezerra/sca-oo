@@ -87,15 +87,17 @@ public class UsuarioController {
 
 		List<Professor> professores = professorRepo.findProfessores();
 		List<Departamento> departamentos = departamentoRepo.findDepartamentos();
-		List<Departamento> depProf = new ArrayList<>();
 		
-	/*	for(int i=0; i< professores.size();i++){
+		
+	/*	List<Departamento> depProf = new ArrayList<>();
+		
+		for(int i=0; i< professores.size();i++){
 			Departamento d = departamentoRepo.findDepartamentoByProfessor(professores.get(i).getMatricula());			
 			System.out.println(departamentoRepo.findDepartamentoByProfessor(professores.get(i).getMatricula()));
 			
 			depProf.add(d);
 
-		} */ 
+		} 
 		List<Professor> t = new ArrayList<>();
 		
 		for(int i=0;i<departamentos.size();i++){
@@ -114,7 +116,7 @@ public class UsuarioController {
 			}			
 		}
 		
-	/*	for(int i=0;i<departamentos.size();i++){
+		for(int i=0;i<departamentos.size();i++){
 			for(int j=0;j<professores.size();j++){
 				System.out.println("ENTROU NOS DOIS FOR");
 				if(departamentos.get(i).getProfessores().contains(professores.get(j).getMatricula())){
@@ -125,9 +127,12 @@ public class UsuarioController {
 					System.out.println("departamentos.get(i)---" + departamentos.get(i).getSigla());
 				}
 			}
-		} */
+		}  
 		
-		model.addAttribute("depProf", depProf);
+		model.addAttribute("depProf", depProf);  */
+		
+		
+		
 		model.addAttribute("departamentos", departamentos);
 		model.addAttribute("professores", professores);
 

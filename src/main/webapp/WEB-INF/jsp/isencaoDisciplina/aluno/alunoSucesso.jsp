@@ -9,8 +9,9 @@
 <body>
 Sucesso!
 
- <a class="button_embedded"
-		href="${pageContext.request.contextPath}/avaliacaoTurma/menuPrincipal"> <input
-		type="button" value="Voltar" />
+<a class="btn btn-default"
+			href="${pageContext.request.contextPath}/menuPrincipalView"> <i
+			class="fa fa-arrow-left"> </i> Voltar
+		</a>
 </body>
 </html>

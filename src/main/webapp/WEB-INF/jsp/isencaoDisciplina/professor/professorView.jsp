@@ -56,8 +56,9 @@
 	
 	</form>
 	</div>
-	<a href="${pageContext.request.contextPath}/avaliacaoTurma/menuPrincipal">
-			<input class="btn btn-default" type="button" value="Voltar" />
+<a class="btn btn-default"
+			href="${pageContext.request.contextPath}/menuPrincipalView"> <i
+			class="fa fa-arrow-left"> </i> Voltar
 		</a>
 </body>
 </html>

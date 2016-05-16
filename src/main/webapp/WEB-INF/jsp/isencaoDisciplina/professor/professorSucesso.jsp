@@ -8,5 +8,10 @@
 </head>
 <body>
 SUCESSOO!!!
+
+<a class="btn btn-default"
+			href="${pageContext.request.contextPath}/menuPrincipalView"> <i
+			class="fa fa-arrow-left"> </i> Voltar
+		</a>
 </body>
 </html>

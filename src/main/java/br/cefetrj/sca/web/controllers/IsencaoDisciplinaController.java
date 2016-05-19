@@ -3,7 +3,6 @@ package br.cefetrj.sca.web.controllers;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,11 +53,18 @@ public class IsencaoDisciplinaController {
 
 			Aluno aluno = is.findAlunoByMatricula(matricula);
 			List<ItemIsencao> it = new ArrayList<>();
+			//String verificarSituacaoItemIsencao = null;
+			String verificarSituacaoItemIsencao = null;
 			
 			if(aluno.getProcessoIsencao() != null){
 				for(int i=0;i<aluno.getProcessoIsencao().getListaItenIsencao().size();i++){
 					it.add(aluno.getProcessoIsencao().getListaItenIsencao().get(i));
+					if(aluno.getProcessoIsencao().getListaItenIsencao().get(i).getSituacao() != null){
+						verificarSituacaoItemIsencao = "verificado";
+					}
 				}
+								
+				model.addAttribute("verificarSituacaoItemIsencao", verificarSituacaoItemIsencao);
 				model.addAttribute("itemIsencaoByProcessoIsencao", it);
 			}
 			model.addAttribute("aluno", aluno);
@@ -119,6 +125,7 @@ public class IsencaoDisciplinaController {
 				System.out.println("ja existe processo isencao o aluno e ta atualizando o processo isencao dele");
 				// se ele tiver o processo de isencao, vai salvar o processo que
 				// já esta existente
+				aluno.getProcessoIsencao().getListaItenIsencao().removeAll(aluno.getProcessoIsencao().getListaItenIsencao());
 				pi = aluno.getProcessoIsencao();
 				for(int i=0;i<aluno.getProcessoIsencao().getListaItenIsencao().size();i++){				
 					aluno.getProcessoIsencao().getListaItenIsencao().removeAll(aluno.getProcessoIsencao().getListaItenIsencao());
@@ -185,7 +192,8 @@ public class IsencaoDisciplinaController {
 			model.addAttribute("itemIsencaoByProcessoIsencao", aluno.getProcessoIsencao().getListaItenIsencao());
 			
 			//return "/isencaoDisciplina/aluno/alunoSucesso";
-			return "/menuPrincipalView";
+			return visualizarProcessoIsencao(model, request, session);
+			//return "/menuPrincipalView";
 		} catch (Exception exc) {
 
 			model.addAttribute("error", exc.getMessage());
@@ -284,15 +292,9 @@ public class IsencaoDisciplinaController {
 			@RequestParam("aluno") String matriculaAluno) {
 		
 		System.out.println("sop matricula: " + matriculaAluno);
+		List<String> itemIsen = new ArrayList<>();
 		
 		Aluno aluno = is.findAlunoByMatricula(matriculaAluno);
-		
-	/*	for (int i = 0; i < item.size(); i++) {
-			System.out.println("itens: " + item.get(i));
-		}
-		for (int j = 0; j < radio.size(); j++) {
-			System.out.println("radio : " + radio.get(j));
-		} */
 
 		for (int i = 0; i < item.size(); i++) {
 			String itemTraco = item.get(i).substring(8, 9);
@@ -308,15 +310,25 @@ public class IsencaoDisciplinaController {
 				}
 				
 				if(radioTraco.equals(itemTraco)){
-					System.out.println("ENTROUUU");
-						System.out.println("inffffff");
 						String valorSalvo = radio.get(j).substring(0, radio.get(j).indexOf("-"));					
 						aluno.getProcessoIsencao().getListaItenIsencao().get(i).setSituacao(valorSalvo);
-												
+						Date date = new Date();
+						aluno.getProcessoIsencao().getListaItenIsencao().get(i).setDataAnalise(date);
+						itemIsen.add(item.get(i));
+					
 						itemIsencaoRepo.save(aluno.getProcessoIsencao().getListaItenIsencao().get(i));
+				}
+								
+				if(aluno.getProcessoIsencao().getListaItenIsencao().get(i).getSituacao() != null){					
+					if(item.size() == itemIsen.size()){
+						aluno.getProcessoIsencao().setSituacaoProcessoIsencao("ANALISADO");
+					} else {
+						aluno.getProcessoIsencao().setSituacaoProcessoIsencao("EM ANALISE");
+					}
 				}
 			}
 		}
-			return "/isencaoDisciplina/professor/professorSucesso";
+			//return "/isencaoDisciplina/professor/professorSucesso";
+			return "/menuPrincipalView";
 	}	
 }

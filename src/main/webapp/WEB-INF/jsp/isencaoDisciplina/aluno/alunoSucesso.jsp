@@ -12,14 +12,22 @@
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <title>Isenção de Disciplina</title>
 </head>
 <body>
-	<b> Aluno: ${aluno.nome }</b>
+<h4>
+<b> Aluno: ${aluno.nome }</b>
 	<br></br>
 	<b> Matrícula: ${aluno.matricula }</b>
 	<br></br>
+	<c:if test="${aluno.processoIsencao.situacaoProcessoIsencao != null}">
+	Situação: ${aluno.processoIsencao.situacaoProcessoIsencao}
+	</c:if>
 	<br></br>
+
+</h4>
+	
 
 	<c:if test="${aluno.processoIsencao != null}">
 		<div class="table-responsive" >
@@ -40,22 +48,27 @@
 								<td>${itemIsencaoByProcessoIsencao.id}</td>
 								<td>${itemIsencaoByProcessoIsencao.disciplina.nome}</td>
 								<td>${itemIsencaoByProcessoIsencao.situacao}</td>
-								<td>${itemIsencaoByProcessoIsencao.dataAnalise}</td>
+								<td><fmt:formatDate pattern="dd/MM/yyyy" value="${itemIsencaoByProcessoIsencao.dataAnalise}" /></td>
+								
 							</tr>
 						</c:forEach>
 					</tbody>
 
 				</table>
 			</div>
-			
-					<div>				
-				<a class="btn btn-success custom-width" type="submit"
-		href="${pageContext.request.contextPath}/isencaoDisciplina/alunoView"> <i
-		class="fa fa-arrow-left"> </i> Criar Nova Isenção
-				</a>
-			</div>
+		<div>
+		<c:if test="${aluno.processoIsencao.situacaoProcessoIsencao == null }">
+		<a class="btn btn-success custom-width" type="submit"
+				href="${pageContext.request.contextPath}/isencaoDisciplina/alunoView">
+				<i class="fa fa-arrow-left"> </i> Criar Nova Isenção
+			</a>
+		</c:if>
+
+		</div>
 	</c:if>
 	<c:if test="${aluno.processoIsencao == null}">
+		<h5 align="center">Não existe Processo de Isenção em aberto</h5>
+		<br>
 		<div>				
 				<a class="btn btn-success custom-width" type="submit"
 		href="${pageContext.request.contextPath}/isencaoDisciplina/alunoView"> <i

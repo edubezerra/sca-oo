@@ -13,6 +13,7 @@ public class ProcessoIsencao {
 	@Id
 	@GeneratedValue
 	private Long id;
+	private String situacaoProcessoIsencao;
 
 	private Date dataRegistro;
 
@@ -41,6 +42,14 @@ public class ProcessoIsencao {
 
 	public void setListaItenIsencao(List<ItemIsencao> listaItenIsencao) {
 		this.listaItenIsencao = listaItenIsencao;
+	}
+
+	public String getSituacaoProcessoIsencao() {
+		return situacaoProcessoIsencao;
+	}
+
+	public void setSituacaoProcessoIsencao(String situacaoProcessoIsencao) {
+		this.situacaoProcessoIsencao = situacaoProcessoIsencao;
 	}
 	
 }

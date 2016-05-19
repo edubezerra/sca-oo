@@ -55,20 +55,29 @@
 							<td>${alunosItemIsencao.disciplina.nome}</td>
 							<td>
 
-							<select name="radio" class="form-control ">
-										<option value="" label="Selecionar..."
-													selected disabled>Selecionar</option>
-										<option value="deferir-${i.index}" >DEFERIR</option>
-										<option value="indeferir-${i.index}" >INDEFERIR</option>
-							</select>
+							<c:if test="${alunosItemIsencao.situacao != null}">
+									<select disabled="true" name="radio" class="form-control ">
+										<option value="" selected disabled>${alunosItemIsencao.situacao}</option>
+									</select>
+								</c:if> 
+								<c:if test="${alunosItemIsencao.situacao == null}">
+									<select name="radio" class="form-control ">
+										<option value="" label="Selecionar..." selected disabled>Selecionar</option>
+										<option value="deferir-${i.index}">DEFERIR</option>
+										<option value="indeferir-${i.index}">INDEFERIR</option>
+									</select>
+								</c:if>
 							</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 
 			</table>
-			<button class="btn btn-success custom-width" type="submit"
+			<c:if test="${aluno.processoIsencao.situacaoProcessoIsencao != 'ANALISADO'}">
+				<button class="btn btn-success custom-width" type="submit"
 				name="matricula">Confirmar</button>
+			</c:if>
+			
 		</div>
 	</form>
 <a class="btn btn-default"

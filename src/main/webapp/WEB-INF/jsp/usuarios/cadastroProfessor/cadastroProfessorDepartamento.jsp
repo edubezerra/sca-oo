@@ -24,11 +24,11 @@
 	<div class="generic-container">
 
 		<div class="panel panel-default" align="center">
-			<form 
+			<form
 				action="${pageContext.request.contextPath}/usuarios/setListProfessorDepartamento"
 				method="POST">
 				<!-- Default panel contents -->
-				<div class="panel-heading" >
+				<div class="panel-heading">
 					<h3>Lista de Professores</h3>
 				</div>
 				<table class="table table-hover">
@@ -53,22 +53,22 @@
 
 								<td><select name="departamento">
 
-										<!-- 
-							<c:forEach items="${depProf}" var="depProf">										
-										<c:choose>
-											<c:when test="${depProf == null} ">
-												<option value="" label="Selecionar..." selected disabled>Selecionar</option>
-											</c:when>
-											<c:otherwise>
-												<option value="" selected disabled>${depProf.sigla}</option>
-											</c:otherwise>
-										</c:choose>
+
+										<c:forEach items="${depProf}" var="depProf">
+											<c:choose>
+												<c:when test="${depProf == null} ">
+													<option value="" label="Selecionar..." selected disabled>Selecionar</option>
+												</c:when>
+												<c:otherwise>
+													<option value="" selected disabled>${depProf.sigla}</option>
+												</c:otherwise>
+											</c:choose>
 										</c:forEach>
-							
-							
-							 -->
+
+
+
 										<option value="" class="form-control" label="Selecionar..."
-													selected disabled>Selecionar</option>
+											selected disabled>Selecionar</option>
 										<c:forEach items="${departamentos}" var="departamento">
 											<option value="${departamento.sigla}-${i.index}">${departamento.sigla}</option>
 										</c:forEach>
@@ -77,7 +77,7 @@
 						</c:forEach>
 					</tbody>
 				</table>
-				<button type="submit" class="btn btn-success" >Adicionar</button>
+				<button type="submit" class="btn btn-success">Adicionar</button>
 
 			</form>
 		</div>

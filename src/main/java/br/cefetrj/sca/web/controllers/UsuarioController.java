@@ -1,8 +1,9 @@
 package br.cefetrj.sca.web.controllers;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -87,56 +88,24 @@ public class UsuarioController {
 
 		List<Professor> professores = professorRepo.findProfessores();
 		List<Departamento> departamentos = departamentoRepo.findDepartamentos();
-		
-		
-	/*	List<Departamento> depProf = new ArrayList<>();
-		
-		for(int i=0; i< professores.size();i++){
-			Departamento d = departamentoRepo.findDepartamentoByProfessor(professores.get(i).getMatricula());			
-			System.out.println(departamentoRepo.findDepartamentoByProfessor(professores.get(i).getMatricula()));
-			
-			depProf.add(d);
+		Map<String, String> mapProfDep = new HashMap<String, String>();
 
-		} 
-		List<Professor> t = new ArrayList<>();
-		
-		for(int i=0;i<departamentos.size();i++){
-			t.addAll(departamentos.get(i).getProfessores());
-			
-			for(int j=0;j<t.size();j++){
-				for(int z=0;z<professores.size();z++){
-					if(t.get(j).getMatricula().equals(professores.get(z).getMatricula())){
-					System.out.println("faz a verificacao");
-					Departamento d = departamentoRepo.findDepartamentoByProfessor(professores.get(j).getMatricula());
-					if(d != null){
-						depProf.add(d);						
-						}
-					}
-				}
-			}			
-		}
-		
-		for(int i=0;i<departamentos.size();i++){
-			for(int j=0;j<professores.size();j++){
-				System.out.println("ENTROU NOS DOIS FOR");
-				if(departamentos.get(i).getProfessores().contains(professores.get(j).getMatricula())){
-					System.out.println("-->>"+departamentos.get(i).getProfessores().contains(professores.get(j).getMatricula()));
-					System.out.println("prof j: " + professores.get(j).getMatricula());
-					Departamento d = departamentoRepo.findDepartamentoByProfessor(professores.get(j).getMatricula());
-					//depProf.add(d);
-					System.out.println("departamentos.get(i)---" + departamentos.get(i).getSigla());
-				}
+		for (int i = 0; i < professores.size(); i++) {
+			Departamento dep = departamentoRepo.findDepartamentoByProfessor(professores.get(i).getMatricula());
+
+			if (departamentoRepo.findDepartamentoByProfessor(professores.get(i).getMatricula()) != null) {
+				String nomeDep = dep.getSigla().toString();
+				String matricula = professores.get(i).getMatricula();
+				mapProfDep.put(matricula, nomeDep); // chave, value
 			}
-		}  
-		
-		model.addAttribute("depProf", depProf);  */
-		
-		
-		
+		}
+
+		model.addAttribute("mapProfDep", mapProfDep);
 		model.addAttribute("departamentos", departamentos);
 		model.addAttribute("professores", professores);
 
 		return "/usuarios/cadastroProfessor/cadastroProfessorDepartamento";
+
 	}
 
 	/**

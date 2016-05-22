@@ -92,12 +92,28 @@ public class UsuarioController {
 
 		for (int i = 0; i < professores.size(); i++) {
 			Departamento dep = departamentoRepo.findDepartamentoByProfessor(professores.get(i).getMatricula());
-
+			
+			System.out.println("professor matricula -> " + professores.get(i).getMatricula() + " departamanto -> "
+					+ departamentoRepo.findDepartamentoByProfessor(professores.get(i).getMatricula()));
+			
+			String nomeDep = null;
+			String matricula = null;
+			
 			if (departamentoRepo.findDepartamentoByProfessor(professores.get(i).getMatricula()) != null) {
-				String nomeDep = dep.getSigla().toString();
-				String matricula = professores.get(i).getMatricula();
-				mapProfDep.put(matricula, nomeDep); // chave, value
-			}
+				nomeDep = dep.getSigla();
+				matricula = professores.get(i).getMatricula();
+				
+				System.out.println("Adicionados no map: matricula "+matricula+" departamento: " + nomeDep);
+			} else{
+				matricula = professores.get(i).getMatricula();				
+			}		
+			
+			mapProfDep.put(matricula, nomeDep); // chave, value
+		}
+		
+		for(int i=0;i<mapProfDep.size();i++){
+			System.out.println("--------------------------Pecorrendo o map");
+			System.out.println("matricula : "+mapProfDep);
 		}
 
 		model.addAttribute("mapProfDep", mapProfDep);

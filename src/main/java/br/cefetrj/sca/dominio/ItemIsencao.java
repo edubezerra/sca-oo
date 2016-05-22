@@ -2,6 +2,7 @@ package br.cefetrj.sca.dominio;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -27,7 +28,7 @@ public class ItemIsencao {
 	@ManyToOne
 	Disciplina disciplina;
 	
-	@OneToOne
+	@OneToOne(cascade = {CascadeType.ALL})
 	Comprovante comprovante;
 
 	public String getSituacao() {

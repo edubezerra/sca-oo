@@ -31,6 +31,16 @@
 	<h3 align="center">Pedidos de Isenção de Disciplina</h3>
 	<br></br>
 
+	<div>
+		<form action="${pageContext.request.contextPath}/isencaoDisciplina/downloadFile" method="POST" target="_blank">
+		<input type="hidden" name="comprovanteProcIsencao" value="${aluno.processoIsencao.id}">
+			<button type="submit" class="btn btn-link">
+				<i class="fa fa-download fa-2x"></i>
+				<h4 class="comprovante">Comprovante</h4>
+			</button>
+		</form>
+	</div>
+
 	<form action="${pageContext.request.contextPath}/isencaoDisciplina/professorSucesso"
 		  method="POST">
 		  <input name="aluno" value="${aluno.matricula}" type="hidden" />
@@ -68,11 +78,19 @@
 									</select>
 								</c:if>
 							</td>
+							<td>
+
+							
+							</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 
 			</table>
+			<c:if test="${aluno.processoIsencao.situacaoProcessoIsencao == 'ANALISADO'}">
+				<button class="btn btn-success custom-width" type="submit"
+				name="matricula" disabled="true">Confirmar</button>
+			</c:if>
 			<c:if test="${aluno.processoIsencao.situacaoProcessoIsencao != 'ANALISADO'}">
 				<button class="btn btn-success custom-width" type="submit"
 				name="matricula">Confirmar</button>
@@ -80,7 +98,7 @@
 			
 		</div>
 	</form>
-<a class="btn btn-default"
+	<a class="btn btn-default"
 			href="${pageContext.request.contextPath}/menuPrincipalView"> <i
 			class="fa fa-arrow-left"> </i> Voltar
 		</a>

@@ -51,24 +51,27 @@
 								<td>${professor.matricula}</td>
 								<td>${professor.pessoa.email}</td>
 
-								<td><select name="departamento">
-
-
-										<c:forEach items="${depProf}" var="depProf">
-											<c:choose>
-												<c:when test="${depProf == null} ">
-													<option value="" label="Selecionar..." selected disabled>Selecionar</option>
-												</c:when>
-												<c:otherwise>
-													<option value="" selected disabled>${depProf.sigla}</option>
-												</c:otherwise>
-											</c:choose>
+								<td><select name="departamento">						 		
+								 		
+								 		<c:forEach items="${mapProfDep}" var="mapProfDep">
+											<c:if test="${mapProfDep.key == professor.matricula}">
+												<c:if test="${mapProfDep.value != null}">
+													<option value="" label="${mapProfDep.value}" selected
+														disabled></option>
+												</c:if>
+												<c:if test="${mapProfDep.value == null}">
+													<option value="" class="form-control" label="Selecionar..."
+														selected disabled>Selecionar</option>
+												</c:if>
+											</c:if>
 										</c:forEach>
+										
+										
 
-
-
+										<!-- 
 										<option value="" class="form-control" label="Selecionar..."
-											selected disabled>Selecionar</option>
+											selected disabled>Selecionar</option>																											
+										 -->
 										<c:forEach items="${departamentos}" var="departamento">
 											<option value="${departamento.sigla}-${i.index}">${departamento.sigla}</option>
 										</c:forEach>

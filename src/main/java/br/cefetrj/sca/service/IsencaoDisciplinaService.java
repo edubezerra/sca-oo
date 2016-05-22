@@ -6,10 +6,12 @@ import org.springframework.stereotype.Service;
 
 import br.cefetrj.sca.dominio.Aluno;
 import br.cefetrj.sca.dominio.Disciplina;
+import br.cefetrj.sca.dominio.ItemIsencao;
 import br.cefetrj.sca.dominio.ProcessoIsencao;
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.repositories.AlunoRepositorio;
 import br.cefetrj.sca.dominio.repositories.DisciplinaRepositorio;
+import br.cefetrj.sca.dominio.repositories.ItemIsencaoRepositorio;
 import br.cefetrj.sca.dominio.repositories.ProcessoIsencaoRepositorio;
 import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
 
@@ -27,6 +29,9 @@ public class IsencaoDisciplinaService {
 	
 	@Autowired
 	private ProcessoIsencaoRepositorio procIsencaoRepo;
+	
+	@Autowired
+	private ItemIsencaoRepositorio itemIsencaoRepo;
 
 	public Aluno findAlunoByMatricula(String matricula) {
 
@@ -78,6 +83,10 @@ public class IsencaoDisciplinaService {
 		} else{
 			return a;
 		}	
+	}
+	
+	public ItemIsencao findItemIsencaoById(Long solicitacaoId) {
+		return itemIsencaoRepo.findItemIsencaoById(solicitacaoId);
 	}
 	
 }

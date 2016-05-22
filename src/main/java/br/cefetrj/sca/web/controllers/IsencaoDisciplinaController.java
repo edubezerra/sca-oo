@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -24,9 +25,12 @@ import br.cefetrj.sca.dominio.ItemIsencao;
 import br.cefetrj.sca.dominio.ProcessoIsencao;
 import br.cefetrj.sca.dominio.Professor;
 import br.cefetrj.sca.dominio.matriculaforaprazo.Comprovante;
+import br.cefetrj.sca.dominio.matriculaforaprazo.MatriculaForaPrazo;
 import br.cefetrj.sca.dominio.repositories.ItemIsencaoRepositorio;
 import br.cefetrj.sca.dominio.repositories.ProcessoIsencaoRepositorio;
+import br.cefetrj.sca.dominio.usuarios.Usuario;
 import br.cefetrj.sca.service.IsencaoDisciplinaService;
+import br.cefetrj.sca.service.RequerimentoMatriculaForaPrazoService;
 
 @Controller
 @SessionAttributes("login")
@@ -41,7 +45,6 @@ public class IsencaoDisciplinaController {
 
 	@Autowired
 	ProcessoIsencaoRepositorio processoIsencaoRepo;
-
 	
 	
 	@RequestMapping(value = "/visualizarProcessoIsencao", method = RequestMethod.GET)
@@ -125,9 +128,11 @@ public class IsencaoDisciplinaController {
 				System.out.println("ja existe processo isencao o aluno e ta atualizando o processo isencao dele");
 				// se ele tiver o processo de isencao, vai salvar o processo que
 				// já esta existente
+				
 				aluno.getProcessoIsencao().getListaItenIsencao().removeAll(aluno.getProcessoIsencao().getListaItenIsencao());
 				pi = aluno.getProcessoIsencao();
-				for(int i=0;i<aluno.getProcessoIsencao().getListaItenIsencao().size();i++){				
+				
+				for(int i=0;i<aluno.getProcessoIsencao().getListaItenIsencao().size();i++){							
 					aluno.getProcessoIsencao().getListaItenIsencao().removeAll(aluno.getProcessoIsencao().getListaItenIsencao());
 					System.out.println("removendo os itens");
 				}
@@ -135,9 +140,9 @@ public class IsencaoDisciplinaController {
 					itemIsencao = new ItemIsencao();
 
 					itemIsencao.setDisciplina(is.getDisciplinaPorId(checkBoxes[i]));
-					// salvar itemIsencao?
+
 					aluno.getProcessoIsencao().getListaItenIsencao().add(itemIsencao);
-					// salvar processoIsencao?
+
 
 					itemIsencaoRepo.save(itemIsencao);
 					System.out.println(itemIsencao.getId() + "------------" + itemIsencao.getDisciplina());
@@ -169,8 +174,8 @@ public class IsencaoDisciplinaController {
 					listaIsen.add(itemIsencao);
 
 					//itemIsencao.setComprovante(comprovante);
-					//itemIsencao.setComprovante(file.getContentType(), file.getBytes(),
-							// file.getOriginalFilename());
+					itemIsencao.setComprovante(file.getContentType(), file.getBytes(),
+							 file.getOriginalFilename());
 
 					itemIsencaoRepo.save(itemIsencao);
 
@@ -292,43 +297,80 @@ public class IsencaoDisciplinaController {
 			@RequestParam("aluno") String matriculaAluno) {
 		
 		System.out.println("sop matricula: " + matriculaAluno);
-		List<String> itemIsen = new ArrayList<>();
+		//List<String> itemIsen = new ArrayList<>();
+		//System.out.println("lista item: " + item.size() + "lista nova itemIsen " + itemIsen.size());
 		
 		Aluno aluno = is.findAlunoByMatricula(matriculaAluno);
-
+		
+		int contadorItemIsencao = 0;
 		for (int i = 0; i < item.size(); i++) {
-			String itemTraco = item.get(i).substring(8, 9);
-			System.out.println("itens: "+item.get(i) +" itemtraco " + itemTraco);
+			int itemNumero = item.get(i).indexOf("-") + 1;		
+			String itemTraco = item.get(i).substring(itemNumero);
+			
+			System.out.println("itemTraco " + itemTraco);
+
+			
+			
 			for (int j = 0; j < radio.size(); j++) {
-				//String radioTraco = radio.get(j).substring(10, 11);
+				
 				String radioTraco = null;
 				
-				if(radio.get(j).length() == 11){
+				int radioNumero = radio.get(j).indexOf("-") + 1;		
+				radioTraco = radio.get(j).substring(radioNumero);
+
+				
+			/*	if(radio.get(j).length() == 11){
 					radioTraco = radio.get(j).substring(10, 11);
 				} else {
 					radioTraco = radio.get(j).substring(8, 9);
-				}
+				} */
 				
 				if(radioTraco.equals(itemTraco)){
-						String valorSalvo = radio.get(j).substring(0, radio.get(j).indexOf("-"));					
+						String valorSalvo = radio.get(j).substring(0, radio.get(j).indexOf("-"));
 						aluno.getProcessoIsencao().getListaItenIsencao().get(i).setSituacao(valorSalvo);
 						Date date = new Date();
 						aluno.getProcessoIsencao().getListaItenIsencao().get(i).setDataAnalise(date);
-						itemIsen.add(item.get(i));
+						//itemIsen.add(item.get(i));
+						//contadorItemIsencao= contadorItemIsencao+1;
+						System.out.println("contadorItemIsencao " + contadorItemIsencao);
 					
 						itemIsencaoRepo.save(aluno.getProcessoIsencao().getListaItenIsencao().get(i));
 				}
-								
-				if(aluno.getProcessoIsencao().getListaItenIsencao().get(i).getSituacao() != null){					
-					if(item.size() == itemIsen.size()){
-						aluno.getProcessoIsencao().setSituacaoProcessoIsencao("ANALISADO");
-					} else {
-						aluno.getProcessoIsencao().setSituacaoProcessoIsencao("EM ANALISE");
-					}
+			}
+		}
+		
+		for (int i = 0; i < item.size(); i++) {
+			if (aluno.getProcessoIsencao().getListaItenIsencao().get(i).getSituacao() != null) {
+				contadorItemIsencao = contadorItemIsencao + 1;
+				if (item.size() == contadorItemIsencao) {
+					aluno.getProcessoIsencao().setSituacaoProcessoIsencao("ANALISADO");
+				} else {
+					aluno.getProcessoIsencao().setSituacaoProcessoIsencao("EM ANALISE");
 				}
 			}
 		}
 			//return "/isencaoDisciplina/professor/professorSucesso";
 			return "/menuPrincipalView";
-	}	
+	}
+	
+	
+	@RequestMapping(value = "/downloadFile", method = RequestMethod.POST)
+	public void downloadFile(@RequestParam("comprovanteProcIsencao") long idProcIsencao,
+			HttpServletRequest request, HttpServletResponse response,
+			HttpSession sessao) {
+		
+		try {
+			List<ItemIsencao> listIten = processoIsencaoRepo.findItemIsencaoByProcessoIsencao(idProcIsencao);
+			long idQualquerItemIsencao = 0;
+			for(int i=0;i<listIten.size();i++){
+				idQualquerItemIsencao = listIten.get(0).getId();
+			}
+			ItemIsencao requerimento = is.findItemIsencaoById(idQualquerItemIsencao);
+			Comprovante comprovante = requerimento.getComprovante();
+			GerenteArquivos.downloadFileNovo(idQualquerItemIsencao,
+					request, response, comprovante);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.cefetrj.sca.dominio.Departamento;
+import br.cefetrj.sca.dominio.Professor;
+import br.cefetrj.sca.dominio.repositories.DepartamentoRepositorio;
+import br.cefetrj.sca.dominio.repositories.ProfessorRepositorio;
 import br.cefetrj.sca.dominio.repositories.UsuarioRepositorio;
 import br.cefetrj.sca.dominio.usuarios.Usuario;
 
@@ -17,6 +21,12 @@ import br.cefetrj.sca.dominio.usuarios.Usuario;
 public class UsuarioService {
 	@Autowired
 	private UsuarioRepositorio repositorio;
+	
+	@Autowired
+	ProfessorRepositorio professorRepo;
+
+	@Autowired
+	DepartamentoRepositorio departamentoRepo;
 
 	public void saveUser(Usuario usr) {
 		repositorio.save(usr);
@@ -70,5 +80,20 @@ public class UsuarioService {
 	public boolean isLoginJaExistente(int id, String login) {
 		return repositorio.findUsuarioByLogin(login) != null;
 	}
+	
+	public List<Professor> findProfessores(){
+		return professorRepo.findProfessores();
+	}
+	
+	public List<Departamento> findDepartamentos(){
+		return departamentoRepo.findDepartamentos();
+	}
+	
+	public Departamento findDepartamentoByProfessor(String matriculaProfessor){
+		return departamentoRepo.findDepartamentoByProfessor(matriculaProfessor);
+	}
 
+	public Departamento findDepartamentoBySigla(String siglaDepartamento){
+		return departamentoRepo.findDepartamentoBySigla(siglaDepartamento);
+	}
 }

@@ -72,6 +72,10 @@
 					href="${pageContext.request.contextPath}/gradedisponibilidades/apresentarFormulario">
 						Fornecimento de Grade de Disponibilidades
 						(${requestScope.periodoLetivo})</a></li>
+				<li><a
+					href="${pageContext.request.contextPath}//visualizacaoAvaliacaoDiscente/turma">
+						Selecao da Turma
+						(${requestScope.periodoLetivo})</a></li>
 			</ul>
 		</sec:authorize>
 

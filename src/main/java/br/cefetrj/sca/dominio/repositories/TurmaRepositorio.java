@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import br.cefetrj.sca.dominio.PeriodoLetivo;
 import br.cefetrj.sca.dominio.Turma;
+import br.cefetrj.sca.dominio.avaliacaoturma.AvaliacaoTurma;
 
 public interface TurmaRepositorio extends JpaRepository<Turma, Serializable> {
 
@@ -28,4 +29,10 @@ public interface TurmaRepositorio extends JpaRepository<Turma, Serializable> {
 	Turma findTurmaByCodigoAndDisciplinaAndPeriodo(String codigoTurma, String codigoDisciplina, PeriodoLetivo periodo);
 
 	Turma findTurmaById(Long idTurma);
+	
+	@Query("SELECT a from AvaliacaoTurma a WHERE a.turmaAvaliada.id = ?1")
+	AvaliacaoTurma findAvaliacoesTurma(Long idTurma);
+
+	@Query("SELECT t from Turma t WHERE t.professor.matricula = ?1")
+	public List<Turma> findTurmasLecionadasPorProfessor(String matriculaProfessor);
 }

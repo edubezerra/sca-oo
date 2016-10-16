@@ -182,7 +182,7 @@ public class TurmaRepositorioTest {
 		List<String> listaNomesDisciplinas = Arrays
 				.asList(arrayNomesDisciplinas);
 
-		PeriodoLetivo periodoLetivo = new PeriodoLetivo(2015, 2);
+		PeriodoLetivo periodoLetivo = new PeriodoLetivo(2016, 2);
 
 		List<Turma> lista = turmaRepositorio
 				.findTurmasLecionadasPorProfessorEmPeriodo(matriculaProfessor,

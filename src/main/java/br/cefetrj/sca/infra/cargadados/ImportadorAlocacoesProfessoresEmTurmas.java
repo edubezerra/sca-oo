@@ -15,6 +15,7 @@ import jxl.WorkbookSettings;
 import jxl.read.biff.BiffException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
 import br.cefetrj.sca.dominio.Disciplina;
@@ -33,8 +34,8 @@ import br.cefetrj.sca.dominio.repositories.TurmaRepositorio;
  *
  */
 @Component
-public class ImportadorAlocacoesProfessoresEmTurmas {
-
+public class  ImportadorAlocacoesProfessoresEmTurmas {
+	
 	@Autowired
 	private DisciplinaRepositorio disciplinaRepositorio;
 
@@ -45,11 +46,11 @@ public class ImportadorAlocacoesProfessoresEmTurmas {
 	private TurmaRepositorio turmaRepositorio;
 
 	static String colunas[] = { "COD_DISCIPLINA", "NOME_DISCIPLINA",
-			"COD_TURMA", "VAGAS_OFERECIDAS", "DIA_SEMANA", "HR_INICIO",
-			"HR_FIM", "TIPO_AULA", "COD_CURSO", "NUM_VERSAO", "NOME_UNIDADE",
-			"ITEM_TABELA", "PERIODO_ITEM", "ANO", "DIA_SEMANA_ITEM", "PERIODO",
-			"DT_INICIO_PERIODO", "DT_FIM_PERIODO", "ID_TURMA",
-			"NOME_DISCIPLINA_SUB", "MATR_EXTERNA", "NOME_DOCENTE", "ID" };
+		"COD_TURMA", "VAGAS_OFERECIDAS", "DIA_SEMANA", "HR_INICIO",
+		"HR_FIM", "TIPO_AULA", "COD_CURSO", "NOME_UNIDADE", "NUM_VERSAO", 
+		"ITEM_TABELA", "PERIODO_ITEM", "ANO", "DIA_SEMANA_ITEM", "PERIODO",
+		"DT_INICIO_PERIODO", "DT_FIM_PERIODO", "ID_TURMA",
+		"NOME_DISCIPLINA_SUB", "MATR_EXTERNA", "NOME_DOCENTE", "ID" };
 
 	/**
 	 * Mapeamento de pares (matrícula, nome) de cada aluno.
@@ -92,7 +93,7 @@ public class ImportadorAlocacoesProfessoresEmTurmas {
 		}
 		System.out.println("Feito!");
 	}
-
+	
 	private void gravarDadosImportados() {
 
 		int qtdAlocacoes = 0;

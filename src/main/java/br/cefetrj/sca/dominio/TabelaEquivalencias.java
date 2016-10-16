@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class TabelaEquivalencias {
 
@@ -21,6 +24,7 @@ public class TabelaEquivalencias {
 	Set<BlocoEquivalencia> blocosEquivalencia;
 	
 	@ManyToOne
+	@JsonIgnore
 	VersaoCurso versaoCursoCorrespondente;
 	
 	@SuppressWarnings("unused")

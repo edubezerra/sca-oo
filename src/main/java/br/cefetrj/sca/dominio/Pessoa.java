@@ -26,6 +26,8 @@ public class Pessoa {
 	private Date dataNascimento;
 
 	private String cpf;
+	
+	private String senha;
 
 	public Pessoa() {
 	}
@@ -108,6 +110,14 @@ public class Pessoa {
 
 	public String getCpf() {
 		return cpf;
+	}
+	
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 
 	@Override
